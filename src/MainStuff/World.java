@@ -1,5 +1,6 @@
 package MainStuff;
 
+import Utilities.WrappingCreatureArray;
 import processing.core.PGraphics;
 
 import java.util.ArrayList;
@@ -7,14 +8,14 @@ import java.util.ArrayList;
 public class World {
     private int width, height;
     private ArrayList<Creature> creatures;
-    private Creature[][] creatureGrid;
+    private WrappingCreatureArray creatureGrid;
 
     public World(int width, int height) {
         this.width = width;
         this.height = height;
 
         creatures = new ArrayList<>();
-        creatureGrid = new Creature[width][height];
+        creatureGrid = new WrappingCreatureArray(new Creature[width][height]);
     }
 
     //TODO: redundancy can be reduced somehow using .class to use these add/remove methods for all future arrays
@@ -28,10 +29,10 @@ public class World {
         int creatureX = creature.getX();
         int creatureY = creature.getY();
 
-        if (creatureGrid[creatureX][creatureY] != null) {
+        if (creatureGrid.get(creatureX, creatureY) == null) {
             //There is no creature at this location, create one there
             creatures.add(creature);
-            creatureGrid[creatureX][creatureY] = creature;
+            creatureGrid.set(creatureX, creatureY, creature);
             return true; //success
         } else {
             //There's already a creature here, we cannot make a creature
@@ -47,12 +48,30 @@ public class World {
     public boolean removeCreature(Creature creature) {
         if (creatures.contains(creature)) {
             //this creature exists, delete it from both arrays
-            creatureGrid[creature.getX()][creature.getY()] = null;
+            creatureGrid.set(creature.getX(), creature.getY(), null);
             creatures.remove(creature);
             return true; //success
         } else {
             //this creature does not exist, can't remove it
-            return false;
+            return false; //failed
+        }
+    }
+
+    /**
+     * @param creature
+     * @param newX -desired x location
+     * @param newY -desired y location
+     * @return true = success, false = fail
+     */
+    public boolean moveCreature(Creature creature, int newX, int newY) {
+        if (creatureGrid.get(newX, newY) == null) {
+            //there is no creature in the desired location, move this creature there
+            creatureGrid.set(newX, newY, creature);
+            creatureGrid.set(creature.getX(), creature.getY(), null);
+            return true; //success
+        } else {
+            //there is a creature in the desired location, abort
+            return false; //failed
         }
     }
 
@@ -68,6 +87,16 @@ public class World {
     }
 
     public void run() {
+        for (Creature creature : creatures) {
+            creature.run();
+        }
+    }
 
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
     }
 }

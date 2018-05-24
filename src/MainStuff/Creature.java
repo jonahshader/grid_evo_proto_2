@@ -3,6 +3,8 @@ package MainStuff;
 import Utilities.FastRand;
 import processing.core.PGraphics;
 
+import static processing.core.PConstants.CENTER;
+
 public class Creature {
     private final int INITIAL_HEALTH = 1000;
 
@@ -23,19 +25,37 @@ public class Creature {
         health = INITIAL_HEALTH;
 
         //as of right now, color is random. it won't be in the future though
-        r = (float) Math.random();
+        r = (float) (Math.random() * 0.5);
         g = (float) Math.random();
         b = (float) Math.random();
     }
 
     public void run() {
-        containingWorld.removeCreature(this);
-        if (FastRand.xorshf96() % 10 == 0) {
-            x += (FastRand.xorshf96() % 3) - 1;
-            y += (FastRand.xorshf96() % 3) - 1;
-        }
+        //In the run method, if we want to change the creature's location, we must change the newX and newY variables so that the moveCreature logic at the end of run will work
+        int newX = x;
+        int newY = y;
 
-        containingWorld.addCreature(this);
+//        if (FastRand.splittableRandom.nextDouble() < 0.85) {
+//            newX += FastRand.splittableRandom.nextInt(3) - 1;
+//            newY += FastRand.splittableRandom.nextInt(3) - 1;
+//            newX += Math.round(FastRand.random.nextGaussian() * 2);
+//            newY += Math.round((FastRand.random.nextGaussian() * 1.5) + FastRand.splittableRandom.nextDouble() * 0.25);
+        newX += Math.round(FastRand.random.nextGaussian() * 1);
+        newY += Math.round(FastRand.random.nextGaussian() * 1);
+//        }
+
+        //If the creature tried to move, tell the containingWorld that we are trying to move
+        if (x != newX || y != newY) {
+
+            //try to move the creature's grid location to the desired location
+            if (containingWorld.moveCreature(this, newX, newY)) {
+                //If the move was successful, update coordinates (to the wrapped coordinates)
+                x = Math.floorMod(newX, containingWorld.getWidth());
+                y = Math.floorMod(newY, containingWorld.getHeight());
+            } else {
+//                System.out.println("Creature move failed.");
+            }
+        }
     }
 
     /**
@@ -44,8 +64,12 @@ public class Creature {
      * @param screenBuffer -the buffer we are drawing to
      */
     public void draw(PGraphics screenBuffer) {
-        screenBuffer.stroke(r, g, b);
+//        screenBuffer.stroke(r * 255, g * 255, b * 255, 10);
+        screenBuffer.fill(r * 255, g * 255, b * 255, 10);
+        screenBuffer.noStroke();
         screenBuffer.point(x, y);
+        screenBuffer.rectMode(CENTER);
+        screenBuffer.rect(x, y, 2, 2);
     }
 
     //Getters
