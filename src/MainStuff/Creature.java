@@ -4,8 +4,9 @@ import Utilities.FastRand;
 import processing.core.PGraphics;
 
 import static processing.core.PConstants.CENTER;
+import static processing.core.PConstants.CORNER;
 
-public class Creature {
+public class Creature implements ICreature {
     private final int INITIAL_HEALTH = 1000;
 
     private int x, y;
@@ -46,7 +47,6 @@ public class Creature {
 
         //If the creature tried to move, tell the containingWorld that we are trying to move
         if (x != newX || y != newY) {
-
             //try to move the creature's grid location to the desired location
             if (containingWorld.moveCreature(this, newX, newY)) {
                 //If the move was successful, update coordinates (to the wrapped coordinates)
@@ -56,6 +56,7 @@ public class Creature {
 //                System.out.println("Creature move failed.");
             }
         }
+        age++;
     }
 
     /**
@@ -64,12 +65,12 @@ public class Creature {
      * @param screenBuffer -the buffer we are drawing to
      */
     public void draw(PGraphics screenBuffer) {
-//        screenBuffer.stroke(r * 255, g * 255, b * 255, 10);
-        screenBuffer.fill(r * 255, g * 255, b * 255, 10);
+//        screenBuffer.stroke(r * 255, g * 255, b * 255);
+        screenBuffer.fill(r * 255, g * 255, b * 255);
+//        screenBuffer.point(x, y);
+        screenBuffer.rectMode(CORNER);
         screenBuffer.noStroke();
-        screenBuffer.point(x, y);
-        screenBuffer.rectMode(CENTER);
-        screenBuffer.rect(x, y, 2, 2);
+        screenBuffer.rect(x, y, 1, 1);
     }
 
     //Getters
@@ -80,5 +81,10 @@ public class Creature {
 
     public int getY() {
         return y;
+    }
+
+    @Override
+    public CreatureType getCreatureType() {
+        return null;
     }
 }
