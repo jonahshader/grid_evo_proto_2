@@ -6,9 +6,9 @@ import processing.core.PGraphics;
 import java.util.ArrayList;
 
 public class VirusSimulator {
-    private final int TIME_REMAINING_INITIAL = 300;
+    private final int TIME_REMAINING_INITIAL = 30;
     private final int POPULATION_SIZE_INITIAL = 30;
-    private final int VIRUS_CLUSTER_CREATURE_COUNT = 15;
+    private final int VIRUS_CLUSTER_CREATURE_COUNT = 480; //max
     private final int ANTI_VIRUS_CLUSTER_CREATURE_COUNT = 10;
 
     private int currentCluster;

@@ -23,8 +23,8 @@ public class AntiVirusCluster {
         this.creatureCount = creatureCount;
         this.actions = actions;
         this.world = world;
-        if (creatureCount > world.getHeight()) {
-            this.creatureCount = world.getHeight();
+        if (creatureCount >= world.getHeight()) {
+            this.creatureCount = world.getHeight() - 1;
             System.out.println("Creature count too hight, limiting to world height.");
         }
 

@@ -8,7 +8,7 @@ import processing.core.PGraphics;
 
 public class Main extends PApplet {
     public final int WORLD_WIDTH = 64;
-    public final int WORLD_HEIGHT = 48;
+    public final int WORLD_HEIGHT = 49;
 
     private PGraphics screenBuffer;
 
