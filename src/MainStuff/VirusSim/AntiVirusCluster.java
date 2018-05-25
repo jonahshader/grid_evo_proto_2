@@ -8,6 +8,8 @@ public class AntiVirusCluster {
     private int creatureCount;
 
     private ArrayList<AntiVirusCreature> creatures;
+    private ArrayList<Float> fitnesses;
+    private int actions;
     private World world;
 
     /**
@@ -19,6 +21,7 @@ public class AntiVirusCluster {
     public AntiVirusCluster(int creatureCount, int actions, World world) {
         //pass params
         this.creatureCount = creatureCount;
+        this.actions = actions;
         this.world = world;
         if (creatureCount > world.getHeight()) {
             this.creatureCount = world.getHeight();
@@ -27,14 +30,17 @@ public class AntiVirusCluster {
 
         //init other vars
         creatures = new ArrayList<>();
-
-        for (int i = 0; i < creatureCount; i++) {
-            AntiVirusCreature newCreature = new AntiVirusCreature(world.getWidth() - 2, (int) ((i / (float) creatureCount) * world.getHeight()), actions, world);
-            creatures.add(newCreature);
-        }
+        fitnesses = new ArrayList<>();
     }
 
     public void start() {
+        //TODO: this is very wrong right now. need to make the virus/antivirus's carry over their genetics instead of generating new genetics here.
+        creatures.clear();
+        for (int i = 0; i < creatureCount; i++) {
+            AntiVirusCreature newCreature = new AntiVirusCreature(world.getWidth() - 2, (int) ((i / (float) this.creatureCount) * world.getHeight()), actions, world);
+            creatures.add(newCreature);
+        }
+
         //create the anti virus's stating wall
         for (int i = 0; i < world.getHeight(); i++) {
             world.addNonRunnableCreature(new AntiVirusWall(world.getWidth() - 1, i));
@@ -46,12 +52,19 @@ public class AntiVirusCluster {
     }
 
     public boolean isDone() {
-        boolean done = true;
         for (AntiVirusCreature creature : creatures) {
             if (!creature.isDone()) {
-                done = false;
+                return false;
             }
         }
-        return done;
+        return true;
+    }
+
+    public void setFitness(float fitness, int run) {
+        if (fitnesses.size() < run) {
+            fitnesses.set(run, fitness);
+        } else {
+            fitnesses.add(run, fitness);
+        }
     }
 }

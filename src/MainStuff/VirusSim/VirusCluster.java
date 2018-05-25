@@ -7,8 +7,10 @@ import java.util.ArrayList;
 
 public class VirusCluster {
     private int creatureCount;
+    private int actions;
 
     private ArrayList<VirusCreature> creatures;
+    private ArrayList<Float> fitnesses;
     private World world;
 
 
@@ -21,6 +23,7 @@ public class VirusCluster {
     public VirusCluster(int creatureCount, int actions, World world) {
         //pass params
         this.creatureCount = creatureCount;
+        this.actions = actions;
         this.world = world;
         if (creatureCount > world.getHeight()) {
             this.creatureCount = world.getHeight();
@@ -29,14 +32,16 @@ public class VirusCluster {
 
         //init other vars
         creatures = new ArrayList<>();
-
-        for (int i = 0; i < creatureCount; i++) {
-            VirusCreature newCreature = new VirusCreature(1, (int) ((i / (float) creatureCount) * world.getHeight()), actions, world);
-            creatures.add(newCreature);
-        }
+        fitnesses = new ArrayList<>();
     }
 
     public void start() {
+        creatures.clear();
+        for (int i = 0; i < creatureCount; i++) {
+            VirusCreature newCreature = new VirusCreature(1, (int) ((i / (float) this.creatureCount) * world.getHeight()), actions, world);
+            creatures.add(newCreature);
+        }
+
         //create the virus's stating wall
         for (int i = 0; i < world.getHeight(); i++) {
             world.addNonRunnableCreature(new VirusWall(0, i));
@@ -61,6 +66,15 @@ public class VirusCluster {
         return averageX;
     }
 
+    public void recordFitness(int run) {
+        if (fitnesses.size() < run) {
+            fitnesses.set(run, getFitness());
+        } else {
+            fitnesses.add(run, getFitness());
+        }
+    }
+
+
     public boolean isDone() {
         boolean done = true;
         for (VirusCreature virusCreature : creatures) {
@@ -69,5 +83,18 @@ public class VirusCluster {
             }
         }
         return done;
+    }
+
+    public float getAverageFitness() {
+        if (fitnesses.size() > 0) {
+            float avg = 0;
+            for (Float f : fitnesses) {
+                avg += f;
+            }
+            avg /= fitnesses.size();
+            return avg;
+        } else {
+            return 0;
+        }
     }
 }

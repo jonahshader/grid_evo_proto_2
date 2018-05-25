@@ -22,6 +22,7 @@ public class Main extends PApplet {
 
     @Override
     public void setup() {
+//        frameRate(999);
         surface.setResizable(true);
         blendMode(BLEND);
         screenBuffer = createGraphics(WORLD_WIDTH, WORLD_HEIGHT);

@@ -12,6 +12,7 @@ public class VirusSimulator {
     private final int ANTI_VIRUS_CLUSTER_CREATURE_COUNT = 10;
 
     private int currentCluster;
+    private int currentIteration;
 
     private ArrayList<VirusCluster> virusClustersGenerations;
     private ArrayList<AntiVirusCluster> antiVirusClustersGenerations;
@@ -28,6 +29,7 @@ public class VirusSimulator {
             antiVirusClustersGenerations.add(new AntiVirusCluster(ANTI_VIRUS_CLUSTER_CREATURE_COUNT, TIME_REMAINING_INITIAL, world));
         }
         currentCluster = 0;
+        currentIteration = 0;
         virusClustersGenerations.get(0).start();
         antiVirusClustersGenerations.get(0).start();
 
@@ -42,8 +44,17 @@ public class VirusSimulator {
         if (virusClustersGenerations.get(currentCluster).isDone() && antiVirusClustersGenerations.get(currentCluster).isDone()) {
             //setup next pair
             System.out.println("Fitness: " + virusClustersGenerations.get(currentCluster).getFitness());
+            virusClustersGenerations.get(currentCluster).recordFitness(currentIteration);
+            antiVirusClustersGenerations.get(currentCluster).setFitness(world.getWidth() - virusClustersGenerations.get(currentCluster).getFitness(), currentIteration);
+            System.out.println("Average fitness: " + virusClustersGenerations.get(currentCluster).getAverageFitness());
             currentCluster++;
             world.clear();
+
+            //move on to next iteration
+            if (currentCluster >= POPULATION_SIZE_INITIAL) {
+                currentCluster = 0;
+                currentIteration++;
+            }
             virusClustersGenerations.get(currentCluster).start();
             antiVirusClustersGenerations.get(currentCluster).start();
         }
