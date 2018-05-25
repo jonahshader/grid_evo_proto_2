@@ -1,6 +1,6 @@
 package MainStuff.VirusSim;
 
-import MainStuff.ICreature;
+import MainStuff.VirusSim.Genetics.DNA;
 import MainStuff.World;
 
 import java.util.ArrayList;
@@ -11,6 +11,7 @@ public class VirusCluster {
 
     private ArrayList<VirusCreature> creatures;
     private ArrayList<Float> fitnesses;
+    private ArrayList<DNA> dnaArrayList;
     private World world;
 
 
@@ -33,6 +34,7 @@ public class VirusCluster {
         //init other vars
         creatures = new ArrayList<>();
         fitnesses = new ArrayList<>();
+
     }
 
     public void start() {

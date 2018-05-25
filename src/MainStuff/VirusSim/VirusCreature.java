@@ -1,6 +1,7 @@
 package MainStuff.VirusSim;
 
 import MainStuff.ICreature;
+import MainStuff.VirusSim.Genetics.DNA;
 import MainStuff.World;
 import Utilities.FastRand;
 import processing.core.PGraphics;
@@ -26,18 +27,19 @@ public class VirusCreature implements ICreature {
     private final int B = 40;
 
     private int x, y;
-    private long age;
+    private int age;
     private int actions;
     boolean done;
 
-    private int[] actionList;
+    private DNA dna;
     private World containingWorld;
 
     /**
      * creates a virus creature with random genetics
+     *
      * @param x
      * @param y
-     * @param actions number of actions in actionList
+     * @param actions         number of actions in actionList
      * @param containingWorld
      */
     public VirusCreature(int x, int y, int actions, World containingWorld) {
@@ -51,10 +53,8 @@ public class VirusCreature implements ICreature {
         age = 0;
         done = false;
 
-        actionList = new int[actions];
-        for (int i = 0; i < actions; i++) {
-            actionList[i] = FastRand.splittableRandom.nextInt(ACTION_ENUM_COUNT);
-        }
+        //Generate random DNA
+        dna = new DNA(actions, ACTION_ENUM_COUNT);
     }
 
     @Override
@@ -65,7 +65,7 @@ public class VirusCreature implements ICreature {
             int newY = y;
 
             if (age < actions) {
-                switch (actionList[(int) age]) {
+                switch (dna.getAction(age)) {
                     case 0: //left
                         newX--;
                         break;

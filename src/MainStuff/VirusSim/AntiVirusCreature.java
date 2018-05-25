@@ -1,6 +1,7 @@
 package MainStuff.VirusSim;
 
 import MainStuff.ICreature;
+import MainStuff.VirusSim.Genetics.DNA;
 import MainStuff.World;
 import Utilities.CirclePoints;
 import Utilities.FastRand;
@@ -27,12 +28,12 @@ public class AntiVirusCreature implements ICreature {
     private final int B = 255;
 
     private int x, y;
-    private long age;
+    private int age;
     private int actions;
     boolean done;
     boolean blockerReleased;
 
-    private int[] actionList;
+    private DNA dna;
     private World containingWorld;
 
     /**
@@ -54,10 +55,8 @@ public class AntiVirusCreature implements ICreature {
         done = false;
         blockerReleased = false;
 
-        actionList = new int[actions];
-        for (int i = 0; i < actions; i++) {
-            actionList[i] = FastRand.splittableRandom.nextInt(ACTION_ENUM_COUNT);
-        }
+        //generate random dna
+        dna = new DNA(actions, ACTION_ENUM_COUNT);
     }
 
     @Override
@@ -68,7 +67,7 @@ public class AntiVirusCreature implements ICreature {
             int newY = y;
 
             if (age < actions) {
-                switch (actionList[(int) age]) {
+                switch (dna.getAction(age)) {
                     case 0: //left
                         newX--;
                         break;

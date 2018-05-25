@@ -1,15 +1,17 @@
 package MainStuff.VirusSim;
 
+import MainStuff.VirusSim.Genetics.DNA;
 import MainStuff.World;
 
 import java.util.ArrayList;
 
 public class AntiVirusCluster {
     private int creatureCount;
+    private int actions;
 
     private ArrayList<AntiVirusCreature> creatures;
     private ArrayList<Float> fitnesses;
-    private int actions;
+    private ArrayList<DNA> dnaArrayList;
     private World world;
 
     /**
