@@ -1,5 +1,6 @@
 package MainStuff.VirusSim;
 
+import MainStuff.VirusSim.Cells.VirusWall;
 import MainStuff.VirusSim.Genetics.DNA;
 import MainStuff.World;
 

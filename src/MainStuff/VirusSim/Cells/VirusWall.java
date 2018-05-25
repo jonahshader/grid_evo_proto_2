@@ -1,4 +1,4 @@
-package MainStuff.VirusSim;
+package MainStuff.VirusSim.Cells;
 
 import MainStuff.ICreature;
 import processing.core.PGraphics;
@@ -10,7 +10,7 @@ public class VirusWall implements ICreature {
     private final float G = 100;
     private final float B = 40;
 
-    private int x, y;
+    protected int x, y;
 
     public VirusWall(int x, int y) {
         this.x = x;

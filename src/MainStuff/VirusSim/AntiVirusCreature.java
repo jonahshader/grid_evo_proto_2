@@ -1,5 +1,6 @@
 package MainStuff.VirusSim;
 
+import MainStuff.VirusSim.Cells.AntiVirusBlock;
 import MainStuff.VirusSim.Genetics.DNA;
 import MainStuff.World;
 import Utilities.CirclePoints;
