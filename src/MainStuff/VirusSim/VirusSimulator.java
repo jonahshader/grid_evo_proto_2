@@ -30,6 +30,7 @@ public class VirusSimulator {
         currentCluster = 0;
         virusClustersGenerations.get(0).start();
         antiVirusClustersGenerations.get(0).start();
+
     }
 
     public void draw(PGraphics screenBuffer) {

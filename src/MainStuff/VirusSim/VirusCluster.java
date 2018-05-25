@@ -24,7 +24,7 @@ public class VirusCluster {
         this.world = world;
         if (creatureCount > world.getHeight()) {
             this.creatureCount = world.getHeight();
-            System.out.println("Creature count too hight, limiting to world height.");
+            System.out.println("Creature count too high, limiting to world height.");
         }
 
         //init other vars

@@ -106,7 +106,8 @@ public class World {
     }
 
     public void clear() {
-        creatureGrid = new WrappingCreatureArray(new Creature[width][height]);
+        creatureGrid = new WrappingCreatureArray(new ICreature[width][height]);
+        nonRunnableCreatures.clear();
         creatures.clear();
     }
 
