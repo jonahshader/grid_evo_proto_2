@@ -1,18 +1,16 @@
 package MainStuff.VirusSim;
 
-import MainStuff.ICreature;
 import MainStuff.VirusSim.Genetics.DNA;
 import MainStuff.World;
 import Utilities.CirclePoints;
-import Utilities.FastRand;
 import processing.core.PGraphics;
 
 import java.util.ArrayList;
 
 import static processing.core.PConstants.CORNER;
 
-public class AntiVirusCreature implements ICreature {
-    private final int ACTION_ENUM_COUNT = 6;
+public class AntiVirusCreature extends VirusCreature {
+    private static final int ACTION_ENUM_COUNT = 6;
     //int value actions:
     /*
     0: left
@@ -27,14 +25,8 @@ public class AntiVirusCreature implements ICreature {
     private final int G = 40;
     private final int B = 255;
 
-    private int x, y;
-    private int age;
-    private int actions;
-    boolean done;
     boolean blockerReleased;
 
-    private DNA dna;
-    private World containingWorld;
 
     /**
      * creates an antivirus creature with random genetics
@@ -44,19 +36,24 @@ public class AntiVirusCreature implements ICreature {
      * @param containingWorld
      */
     public AntiVirusCreature(int x, int y, int actions, World containingWorld) {
-        //pass params
-        this.x = x;
-        this.y = y;
-        this.actions = actions;
-        this.containingWorld = containingWorld;
+        super(x, y, actions, ACTION_ENUM_COUNT, containingWorld);
 
         //init other vars
-        age = 0;
-        done = false;
         blockerReleased = false;
+    }
 
-        //generate random dna
-        dna = new DNA(actions, ACTION_ENUM_COUNT);
+    /**
+     * creates an antivirus creature with specific DNA
+     * @param x
+     * @param y
+     * @param dna
+     * @param containingWorld
+     */
+    public AntiVirusCreature(int x, int y, DNA dna, World containingWorld) {
+        super(x, y, dna, containingWorld);
+
+        //init other vars
+        blockerReleased = false;
     }
 
     @Override
@@ -143,21 +140,7 @@ public class AntiVirusCreature implements ICreature {
     }
 
     @Override
-    public int getX() {
-        return x;
-    }
-
-    @Override
-    public int getY() {
-        return y;
-    }
-
-    @Override
     public CreatureType getCreatureType() {
         return CreatureType.ANTIVIRUS;
-    }
-
-    public boolean isDone() {
-        return done;
     }
 }

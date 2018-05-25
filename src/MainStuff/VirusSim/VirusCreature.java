@@ -3,7 +3,6 @@ package MainStuff.VirusSim;
 import MainStuff.ICreature;
 import MainStuff.VirusSim.Genetics.DNA;
 import MainStuff.World;
-import Utilities.FastRand;
 import processing.core.PGraphics;
 
 import static MainStuff.ICreature.CreatureType.ANTIVIRUS_BLOCK;
@@ -26,13 +25,13 @@ public class VirusCreature implements ICreature {
     private final int G = 255;
     private final int B = 40;
 
-    private int x, y;
-    private int age;
-    private int actions;
-    boolean done;
+    protected int x, y;
+    protected int age;
+    protected int actions;
+    protected boolean done;
 
-    private DNA dna;
-    private World containingWorld;
+    protected DNA dna;
+    protected World containingWorld;
 
     /**
      * creates a virus creature with random genetics
@@ -55,6 +54,41 @@ public class VirusCreature implements ICreature {
 
         //Generate random DNA
         dna = new DNA(actions, ACTION_ENUM_COUNT);
+    }
+
+    /**
+     * create creature with specific DNA
+     * @param x
+     * @param y
+     * @param dna
+     * @param containingWorld
+     */
+    public VirusCreature(int x, int y, DNA dna, World containingWorld) {
+        //pass params
+        this.x = x;
+        this.y = y;
+        this.dna = dna;
+        this.containingWorld = containingWorld;
+
+        //init other vars
+        age = 0;
+        done = false;
+    }
+
+    //this is for child classes
+    protected VirusCreature(int x, int y, int actions, int independentActions, World containingWorld) {
+        //pass params
+        this.x = x;
+        this.y = y;
+        this.actions = actions;
+        this.containingWorld = containingWorld;
+
+        //init other vars
+        age = 0;
+        done = false;
+
+        //generate random DNA
+        dna = new DNA(actions, independentActions);
     }
 
     @Override
