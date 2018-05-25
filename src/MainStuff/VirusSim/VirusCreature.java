@@ -5,12 +5,12 @@ import MainStuff.World;
 import Utilities.FastRand;
 import processing.core.PGraphics;
 
+import static MainStuff.ICreature.CreatureType.ANTIVIRUS_BLOCK;
 import static MainStuff.ICreature.CreatureType.VIRUS;
 import static processing.core.PConstants.CORNER;
 
 public class VirusCreature implements ICreature {
-
-    public final int ACTION_ENUM_COUNT = 6;
+    private final int ACTION_ENUM_COUNT = 6;
     //int value actions:
     /*
     0: left
@@ -31,7 +31,6 @@ public class VirusCreature implements ICreature {
     boolean done;
 
     private int[] actionList;
-
     private World containingWorld;
 
     /**
@@ -120,7 +119,13 @@ public class VirusCreature implements ICreature {
     }
 
     private void explode() {
-        //remove a radius of antivirus filler
+        for (int i = 1; i < 4; i++) {
+            ICreature explodedCreature = containingWorld.getCreature(x + i, y);
+            if (explodedCreature != null)
+                if (explodedCreature.getCreatureType() == ANTIVIRUS_BLOCK) {
+                    containingWorld.removeNonRunnableCreature(explodedCreature);
+                }
+        }
     }
 
     @Override

@@ -89,6 +89,10 @@ public class World {
         }
     }
 
+    public ICreature getCreature(int x, int y) {
+        return creatureGrid.get(x, y);
+    }
+
     public boolean removeNonRunnableCreature(ICreature creature) {
         if (creatures.contains(creature)) {
             //this creature exists, delete it from both arrays

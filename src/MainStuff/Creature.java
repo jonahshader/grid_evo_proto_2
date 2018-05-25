@@ -36,14 +36,8 @@ public class Creature implements ICreature {
         int newX = x;
         int newY = y;
 
-//        if (FastRand.splittableRandom.nextDouble() < 0.85) {
-//            newX += FastRand.splittableRandom.nextInt(3) - 1;
-//            newY += FastRand.splittableRandom.nextInt(3) - 1;
-//            newX += Math.round(FastRand.random.nextGaussian() * 2);
-//            newY += Math.round((FastRand.random.nextGaussian() * 1.5) + FastRand.splittableRandom.nextDouble() * 0.25);
         newX += Math.round(FastRand.random.nextGaussian() * 1);
         newY += Math.round(FastRand.random.nextGaussian() * 1);
-//        }
 
         //If the creature tried to move, tell the containingWorld that we are trying to move
         if (x != newX || y != newY) {
@@ -52,8 +46,6 @@ public class Creature implements ICreature {
                 //If the move was successful, update coordinates (to the wrapped coordinates)
                 x = Math.floorMod(newX, containingWorld.getWidth());
                 y = Math.floorMod(newY, containingWorld.getHeight());
-            } else {
-//                System.out.println("Creature move failed.");
             }
         }
         age++;
@@ -65,9 +57,7 @@ public class Creature implements ICreature {
      * @param screenBuffer -the buffer we are drawing to
      */
     public void draw(PGraphics screenBuffer) {
-//        screenBuffer.stroke(r * 255, g * 255, b * 255);
         screenBuffer.fill(r * 255, g * 255, b * 255);
-//        screenBuffer.point(x, y);
         screenBuffer.rectMode(CORNER);
         screenBuffer.noStroke();
         screenBuffer.rect(x, y, 1, 1);

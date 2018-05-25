@@ -11,6 +11,7 @@ public interface ICreature {
 
     enum CreatureType {
         VIRUS,
-        ANTIVIRUS
+        ANTIVIRUS,
+        ANTIVIRUS_BLOCK
     }
 }
