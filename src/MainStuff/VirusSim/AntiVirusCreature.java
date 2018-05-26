@@ -1,7 +1,7 @@
 package MainStuff.VirusSim;
 
-import MainStuff.VirusSim.Cells.AntiVirusBlock;
 import MainStuff.VirusSim.Genetics.DNA;
+import MainStuff.VirusSim.Cells.NonActive.AntiVirusBlock;
 import MainStuff.World;
 import Utilities.CirclePoints;
 import processing.core.PGraphics;
@@ -12,6 +12,7 @@ import static processing.core.PConstants.CORNER;
 
 public class AntiVirusCreature extends VirusCreature {
     static final int ACTION_ENUM_COUNT = 6;
+    private final int BLOCKER_RADIUS = 6;
     //int value actions:
     /*
     0: left
@@ -115,7 +116,7 @@ public class AntiVirusCreature extends VirusCreature {
     }
 
     private void releaseBlocker() {
-        ArrayList<CirclePoints.PointInt> points = CirclePoints.generateCircle(x, y, 4);
+        ArrayList<CirclePoints.PointInt> points = CirclePoints.generateCircle(x, y, BLOCKER_RADIUS);
         for (CirclePoints.PointInt point : points) {
             int x = point.x;
             int y = point.y;

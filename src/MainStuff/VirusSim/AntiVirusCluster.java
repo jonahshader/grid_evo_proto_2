@@ -1,7 +1,7 @@
 package MainStuff.VirusSim;
 
-import MainStuff.VirusSim.Cells.AntiVirusWall;
 import MainStuff.VirusSim.Genetics.DNA;
+import MainStuff.VirusSim.Cells.NonActive.AntiVirusWall;
 import MainStuff.World;
 
 import java.util.ArrayList;

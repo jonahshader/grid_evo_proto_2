@@ -23,6 +23,7 @@ public class DNA {
 
     public DNA(DNA toClone) {
         dna = (ArrayList<Integer>) toClone.dna.clone();
+//        dna = new ArrayList<>((Collection<? extends Integer>) toClone);
         this.independentActions = toClone.independentActions;
     }
 
@@ -40,9 +41,11 @@ public class DNA {
     }
 
     public void mutate() {
-        for (int i = 0; i < dna.size(); i++) {
-            if (FastRand.splittableRandom.nextDouble() < 0.025) {
-                dna.set(i, FastRand.splittableRandom.nextInt(independentActions));
+        if (FastRand.splittableRandom.nextDouble() < 0.5) {
+            for (int i = 0; i < dna.size(); i++) {
+                if (FastRand.splittableRandom.nextDouble() < 0.03) {
+                    dna.set(i, FastRand.splittableRandom.nextInt(independentActions));
+                }
             }
         }
     }

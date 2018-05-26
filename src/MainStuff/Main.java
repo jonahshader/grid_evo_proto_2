@@ -7,8 +7,8 @@ import processing.core.PApplet;
 import processing.core.PGraphics;
 
 public class Main extends PApplet {
-    public final int WORLD_WIDTH = 12;
-    public final int WORLD_HEIGHT = 18;
+    public final int WORLD_WIDTH = 20;
+    public final int WORLD_HEIGHT = 60;
 
     boolean fastMode = false;
 
@@ -23,7 +23,7 @@ public class Main extends PApplet {
 
     @Override
     public void setup() {
-        frameRate(30);
+        frameRate(60);
         surface.setResizable(true);
         blendMode(BLEND);
         screenBuffer = createGraphics(WORLD_WIDTH, WORLD_HEIGHT);
@@ -46,7 +46,6 @@ public class Main extends PApplet {
             simulator.run();
         }
 
-
         screenBuffer.beginDraw();                        //Begin drawing to buffer
         screenBuffer.background(0);
         simulator.draw(screenBuffer);
@@ -57,7 +56,6 @@ public class Main extends PApplet {
 
     @Override
     public void mousePressed() {
-//        screenBuffer.save("Background.png");
     }
 
     @Override
@@ -66,8 +64,6 @@ public class Main extends PApplet {
             fastMode = !fastMode;
             frameRate(fastMode ? 1000 : 30);
         }
-
-
     }
 
     public static void main(String[] args) {

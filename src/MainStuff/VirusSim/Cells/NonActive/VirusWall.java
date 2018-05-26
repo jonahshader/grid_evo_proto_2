@@ -1,4 +1,4 @@
-package MainStuff.VirusSim.Cells;
+package MainStuff.VirusSim.Cells.NonActive;
 
 import MainStuff.ICreature;
 import processing.core.PGraphics;

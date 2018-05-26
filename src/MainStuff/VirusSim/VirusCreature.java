@@ -1,6 +1,7 @@
 package MainStuff.VirusSim;
 
 import MainStuff.ICreature;
+import MainStuff.VirusSim.Cells.Active.VirusLaser;
 import MainStuff.VirusSim.Genetics.DNA;
 import MainStuff.World;
 import processing.core.PGraphics;
@@ -29,6 +30,7 @@ public class VirusCreature implements ICreature {
     protected int age;
     protected int actions;
     protected boolean done;
+    private boolean abilityUsed;
 
     protected DNA dna;
     protected World containingWorld;
@@ -51,6 +53,7 @@ public class VirusCreature implements ICreature {
         //Initialize other variables
         age = 0;
         done = false;
+        abilityUsed = false;
 
         //Generate random DNA
         dna = new DNA(actions, ACTION_ENUM_COUNT);
@@ -75,6 +78,7 @@ public class VirusCreature implements ICreature {
         //init other vars
         age = 0;
         done = false;
+        abilityUsed = false;
     }
 
     //this is for child classes
@@ -118,8 +122,9 @@ public class VirusCreature implements ICreature {
                         break;
 
                     case 4: //explode
-                        explode();
-                        done = true;
+                        if (!abilityUsed)
+                            explode();
+                        abilityUsed = true;
                         break;
 
                     case 5: //do nothing
@@ -158,8 +163,14 @@ public class VirusCreature implements ICreature {
             ICreature explodedCreature = containingWorld.getCreature(x + i, y);
             if (explodedCreature != null) {
                 if (explodedCreature.getCreatureType() == ANTIVIRUS_BLOCK) {
-                    System.out.println("Exploded stuff");
+//                    System.out.println("Exploded stuff");
                     containingWorld.removeNonRunnableCreature(explodedCreature);
+                    ICreature virusLaser = new VirusLaser(x + i, y, containingWorld);
+                    if (containingWorld.addCreature(virusLaser)) {
+                        System.out.println("shot laser");
+                    } else {
+                        System.out.println("faild to shoot laser");
+                    }
                 }
             }
         }
