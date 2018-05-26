@@ -10,7 +10,7 @@ import static MainStuff.ICreature.CreatureType.VIRUS;
 import static processing.core.PConstants.CORNER;
 
 public class VirusCreature implements ICreature {
-    private final int ACTION_ENUM_COUNT = 6;
+    static final int ACTION_ENUM_COUNT = 6;
     //int value actions:
     /*
     0: left
@@ -70,6 +70,8 @@ public class VirusCreature implements ICreature {
         this.dna = dna;
         this.containingWorld = containingWorld;
 
+        actions = dna.getSize();
+
         //init other vars
         age = 0;
         done = false;
@@ -97,7 +99,6 @@ public class VirusCreature implements ICreature {
             //In the run method, if we want to change the creature's location, we must change the newX and newY variables so that the moveCreature logic at the end of run will work
             int newX = x;
             int newY = y;
-
             if (age < actions) {
                 switch (dna.getAction(age)) {
                     case 0: //left
@@ -155,10 +156,12 @@ public class VirusCreature implements ICreature {
     private void explode() {
         for (int i = 1; i < 4; i++) {
             ICreature explodedCreature = containingWorld.getCreature(x + i, y);
-            if (explodedCreature != null)
+            if (explodedCreature != null) {
                 if (explodedCreature.getCreatureType() == ANTIVIRUS_BLOCK) {
+                    System.out.println("Exploded stuff");
                     containingWorld.removeNonRunnableCreature(explodedCreature);
                 }
+            }
         }
     }
 

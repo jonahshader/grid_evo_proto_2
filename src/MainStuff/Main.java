@@ -7,22 +7,23 @@ import processing.core.PApplet;
 import processing.core.PGraphics;
 
 public class Main extends PApplet {
-    public final int WORLD_WIDTH = 64;
-    public final int WORLD_HEIGHT = 49;
+    public final int WORLD_WIDTH = 12;
+    public final int WORLD_HEIGHT = 18;
+
+    boolean fastMode = false;
 
     private PGraphics screenBuffer;
-
     private VirusSimulator simulator;
 
     @Override
     public void settings() {
-        size(640, 480);
+        size(640, 640);
         noSmooth();
     }
 
     @Override
     public void setup() {
-//        frameRate(999);
+        frameRate(30);
         surface.setResizable(true);
         blendMode(BLEND);
         screenBuffer = createGraphics(WORLD_WIDTH, WORLD_HEIGHT);
@@ -37,7 +38,14 @@ public class Main extends PApplet {
     @Override
     public void draw() {
         //Run the world (everything)
-        simulator.run();
+        if (fastMode) {
+            for (int i = 0; i < 30000; i++) {
+                simulator.run();
+            }
+        } else {
+            simulator.run();
+        }
+
 
         screenBuffer.beginDraw();                        //Begin drawing to buffer
         screenBuffer.background(0);
@@ -49,7 +57,17 @@ public class Main extends PApplet {
 
     @Override
     public void mousePressed() {
-        screenBuffer.save("Background.png");
+//        screenBuffer.save("Background.png");
+    }
+
+    @Override
+    public void keyPressed() {
+        if (key == 'o' || key == 'O') {
+            fastMode = !fastMode;
+            frameRate(fastMode ? 1000 : 30);
+        }
+
+
     }
 
     public static void main(String[] args) {

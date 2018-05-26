@@ -35,13 +35,16 @@ public class VirusCluster {
         //init other vars
         creatures = new ArrayList<>();
         fitnesses = new ArrayList<>();
-
+        dnaArrayList = new ArrayList<>();
+        for (int i = 0; i < creatureCount; i++) {
+            dnaArrayList.add(new DNA(actions, VirusCreature.ACTION_ENUM_COUNT));
+        }
     }
 
     public void start() {
         creatures.clear();
         for (int i = 0; i < creatureCount; i++) {
-            VirusCreature newCreature = new VirusCreature(1, (int) ((i / (float) this.creatureCount) * world.getHeight()), actions, world);
+            VirusCreature newCreature = new VirusCreature(1, (int) ((i / (float) this.creatureCount) * world.getHeight()), dnaArrayList.get(i), world);
             creatures.add(newCreature);
         }
 
@@ -99,5 +102,26 @@ public class VirusCluster {
         } else {
             return 0;
         }
+    }
+
+    public ArrayList<DNA> getDnaArrayList() {
+        return dnaArrayList;
+    }
+
+    public void setNewDNA(ArrayList<DNA> newDNA) {
+        dnaArrayList = new ArrayList<>();
+        for (int i = 0; i < newDNA.size(); i++) {
+            dnaArrayList.add(new DNA(newDNA.get(i)));
+        }
+    }
+
+    public void mutateDNA() {
+        for (DNA dna : dnaArrayList) {
+            dna.mutate();
+        }
+    }
+
+    public void clearFitness() {
+        fitnesses.clear();
     }
 }

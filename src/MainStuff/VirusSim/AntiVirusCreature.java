@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import static processing.core.PConstants.CORNER;
 
 public class AntiVirusCreature extends VirusCreature {
-    private static final int ACTION_ENUM_COUNT = 6;
+    static final int ACTION_ENUM_COUNT = 6;
     //int value actions:
     /*
     0: left
