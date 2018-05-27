@@ -28,7 +28,7 @@ public class AntiVirusCluster {
         this.actions = actions;
         this.world = world;
         if (creatureCount >= world.getHeight()) {
-            this.creatureCount = world.getHeight() - 1;
+            this.creatureCount = world.getHeight() - 2;
             System.out.println("Creature count too hight, limiting to world height.");
         }
 
@@ -42,11 +42,10 @@ public class AntiVirusCluster {
     }
 
     public void start() {
-        //TODO: this is very wrong right now. need to make the virus/antivirus's carry over their genetics instead of generating new genetics here.
         creatures.clear();
         for (int i = 0; i < creatureCount; i++) {
 //            AntiVirusCreature newCreature = new AntiVirusCreature(world.getWidth() - 2, (int) ((i / (float) this.creatureCount) * world.getHeight()), actions, world);
-            AntiVirusCreature newCreature = new AntiVirusCreature(world.getWidth() - 2, (int) ((i / (float) this.creatureCount) * world.getHeight()), dnaArrayList.get(i), world);
+            AntiVirusCreature newCreature = new AntiVirusCreature(world.getWidth() - 2, 1 + (int) ((i / (float) this.creatureCount) * (world.getHeight() - 1)), dnaArrayList.get(i), world);
             creatures.add(newCreature);
         }
 
@@ -54,6 +53,11 @@ public class AntiVirusCluster {
         for (int i = 0; i < world.getHeight(); i++) {
             world.addCreature(new AntiVirusWall(world.getWidth() - 1, i), false);
         }
+        for (int i = world.getWidth() / 2; i < world.getWidth() - 1; i++) {
+            world.addCreature(new AntiVirusWall(i, 0), false);
+            world.addCreature(new AntiVirusWall(i, world.getHeight() - 1), false);
+        }
+
         //add all of the pre-constructed creatures to the world
         for (AntiVirusCreature antiVirusCreature : creatures) {
             world.addCreature(antiVirusCreature, true);

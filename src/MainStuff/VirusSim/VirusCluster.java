@@ -31,7 +31,7 @@ public class VirusCluster {
         this.actions = actions;
         this.world = world;
         if (creatureCount >= world.getHeight()) {
-            this.creatureCount = world.getHeight() - 1;
+            this.creatureCount = world.getHeight() - 2;
             System.out.println("Creature count too high, limiting to world height.");
         }
 
@@ -48,14 +48,21 @@ public class VirusCluster {
         creatures.clear();
         lasersShot = 0;
         for (int i = 0; i < creatureCount; i++) {
-            VirusCreature newCreature = new VirusCreature(1, (int) ((i / (float) this.creatureCount) * world.getHeight()), dnaArrayList.get(i), world, this);
+            VirusCreature newCreature = new VirusCreature(1, 1 + (int) ((i / (float) this.creatureCount) * (world.getHeight() - 1)), dnaArrayList.get(i), world, this);
             creatures.add(newCreature);
         }
+
+
 
         //create the virus's stating wall
         for (int i = 0; i < world.getHeight(); i++) {
             world.addCreature(new VirusWall(0, i), false);
         }
+        for (int i = 0; i < world.getWidth() / 2; i++) {
+            world.addCreature(new VirusWall(i, 0), false);
+            world.addCreature(new VirusWall(i, world.getHeight() - 1), false);
+        }
+
         //add all of the pre-constructed creatures to the world
         for (VirusCreature virusCreature : creatures) {
             world.addCreature(virusCreature, true);
@@ -71,7 +78,7 @@ public class VirusCluster {
         for (VirusCreature virusCreature : creatures) {
             averageX += virusCreature.getX();
         }
-        averageX -= lasersShot * 2;
+        averageX -= lasersShot * 0.75;
         averageX /= creatures.size();
 
         return averageX;

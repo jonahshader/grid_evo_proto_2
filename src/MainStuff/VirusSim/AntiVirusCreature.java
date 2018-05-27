@@ -1,6 +1,5 @@
 package MainStuff.VirusSim;
 
-import MainStuff.ICreature;
 import MainStuff.VirusSim.Genetics.DNA;
 import MainStuff.VirusSim.Cells.NonActive.AntiVirusBlock;
 import MainStuff.World;
@@ -13,7 +12,7 @@ import static processing.core.PConstants.CORNER;
 
 public class AntiVirusCreature extends VirusCreature {
     static final int ACTION_ENUM_COUNT = 11;
-    private final int BLOCKER_RADIUS = 5;
+    private final int BLOCKER_RADIUS = 3;
     //int value actions:
     /*
     0: left

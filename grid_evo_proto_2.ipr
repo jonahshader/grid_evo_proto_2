@@ -141,9 +141,7 @@
   <component name="libraryTable">
     <library name="core">
       <CLASSES>
-        <root url="jar://$PROJECT_DIR$/../../Libraries/Processing Libs/core.jar!/" />
-        <root url="jar://$PROJECT_DIR$/../../Libraries/Processing Libs/gluegen-rt.jar!/" />
-        <root url="jar://$PROJECT_DIR$/../../Libraries/Processing Libs/jogl-all.jar!/" />
+        <root url="jar://$PROJECT_DIR$/../../OneDrive Stuff/OneDrive - Lake Orion Community Schools/Libraries/Processing Libs/core.jar!/" />
       </CLASSES>
       <JAVADOC />
       <SOURCES />
