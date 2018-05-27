@@ -1,5 +1,6 @@
 package MainStuff.VirusSim;
 
+import MainStuff.ICreature;
 import MainStuff.VirusSim.Genetics.DNA;
 import MainStuff.VirusSim.Cells.NonActive.AntiVirusBlock;
 import MainStuff.World;
@@ -11,16 +12,21 @@ import java.util.ArrayList;
 import static processing.core.PConstants.CORNER;
 
 public class AntiVirusCreature extends VirusCreature {
-    static final int ACTION_ENUM_COUNT = 6;
-    private final int BLOCKER_RADIUS = 6;
+    static final int ACTION_ENUM_COUNT = 11;
+    private final int BLOCKER_RADIUS = 5;
     //int value actions:
     /*
     0: left
     1: right
     2: up
     3: down
-    4: release stuff
-    5: dont move
+    4: left x2
+    5: right x2
+    6: up x2
+    7: down x2
+    8: release stuff
+    9: eat virus
+    9: dont move
      */
 
     private final int R = 40;
@@ -38,7 +44,7 @@ public class AntiVirusCreature extends VirusCreature {
      * @param containingWorld
      */
     public AntiVirusCreature(int x, int y, int actions, World containingWorld) {
-        super(x, y, actions, ACTION_ENUM_COUNT, containingWorld);
+        super(x, y, actions, ACTION_ENUM_COUNT, containingWorld, null);
 
         //init other vars
         blockerReleased = false;
@@ -52,7 +58,7 @@ public class AntiVirusCreature extends VirusCreature {
      * @param containingWorld
      */
     public AntiVirusCreature(int x, int y, DNA dna, World containingWorld) {
-        super(x, y, dna, containingWorld);
+        super(x, y, dna, containingWorld, null);
 
         //init other vars
         blockerReleased = false;
@@ -83,16 +89,36 @@ public class AntiVirusCreature extends VirusCreature {
                         newY++;
                         break;
 
-                    case 4: //release antivirus blocker
+                    case 4: //left x2
+                        newX -= 2;
+                        break;
+
+                    case 5: //right x2
+                        newX += 2;
+                        break;
+
+                    case 6: //up x2
+                        newY -= 2;
+                        break;
+
+                    case 7: //down x2
+                        newY += 2;
+                        break;
+
+                    case 8: //release antivirus blocker
                         //TODO:
                         if (!blockerReleased) {
                             releaseBlocker();
-                            done = true;
+//                            done = true;
                             blockerReleased = true;
                         }
                         break;
 
-                    case 5: //do nothing
+                    case 9: //eat virus
+                        eatVirus();
+                        break;
+
+                    case 10: //do nothing
                         break;
                     default: //default is do nothing
                         break;
@@ -115,6 +141,23 @@ public class AntiVirusCreature extends VirusCreature {
         age++;
     }
 
+    private void eatVirus() {
+//        ArrayList<ICreature> adjacentCreatures = new ArrayList<>();
+//        ArrayList<CirclePoints.PointInt> points = CirclePoints.generateCircle(x, y, 2);
+//        for (CirclePoints.PointInt point : points) {
+//            adjacentCreatures.add(containingWorld.getCreature(point.x, point.y));
+//        }
+//
+//        for (ICreature creature : adjacentCreatures) {
+//            if (creature != null) {
+////                if (creature.getCreatureType() == CreatureType.VIRUS || creature.getCreatureType() == CreatureType.ANTIVIRUS_BLOCK) {
+//                    if (creature.getCreatureType() == CreatureType.VIRUS) {
+//                    containingWorld.removeCreature(creature);
+//                }
+//            }
+//        }
+    }
+
     private void releaseBlocker() {
         ArrayList<CirclePoints.PointInt> points = CirclePoints.generateCircle(x, y, BLOCKER_RADIUS);
         for (CirclePoints.PointInt point : points) {
@@ -124,12 +167,12 @@ public class AntiVirusCreature extends VirusCreature {
             //limit to inside the world (don't let it wrap around)
             if (x < 0) x = 0;
             if (x >= containingWorld.getWidth()) x = containingWorld.getWidth() - 1;
-            if (y < 0) y = 0;
-            if (y >= containingWorld.getHeight()) y = containingWorld.getHeight() - 1;
+//            if (y < 0) y = 0;
+//            if (y >= containingWorld.getHeight()) y = containingWorld.getHeight() - 1;
 
             AntiVirusBlock block = new AntiVirusBlock(x, y);
 
-            containingWorld.addNonRunnableCreature(block);
+            containingWorld.addCreature(block, false);
         }
     }
 

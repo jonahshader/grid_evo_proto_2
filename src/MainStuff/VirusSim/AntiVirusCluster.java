@@ -3,6 +3,7 @@ package MainStuff.VirusSim;
 import MainStuff.VirusSim.Genetics.DNA;
 import MainStuff.VirusSim.Cells.NonActive.AntiVirusWall;
 import MainStuff.World;
+import Utilities.FastRand;
 
 import java.util.ArrayList;
 
@@ -51,11 +52,11 @@ public class AntiVirusCluster {
 
         //create the anti virus's stating wall
         for (int i = 0; i < world.getHeight(); i++) {
-            world.addNonRunnableCreature(new AntiVirusWall(world.getWidth() - 1, i));
+            world.addCreature(new AntiVirusWall(world.getWidth() - 1, i), false);
         }
         //add all of the pre-constructed creatures to the world
         for (AntiVirusCreature antiVirusCreature : creatures) {
-            world.addCreature(antiVirusCreature);
+            world.addCreature(antiVirusCreature, true);
         }
     }
 

@@ -8,11 +8,11 @@ import processing.core.PGraphics;
 import java.util.ArrayList;
 
 public class VirusSimulator {
-    private final int TIME_REMAINING_INITIAL = 80;
-    private final int POPULATION_SIZE_INITIAL = 300;
-    private final int VIRUS_CLUSTER_CREATURE_COUNT = 20;
-    private final int ANTI_VIRUS_CLUSTER_CREATURE_COUNT = 10;
-    private final int ITERATIONS_PER_GENERATION = 15; //must be smaller than population size
+    private final int TIME_REMAINING_INITIAL = 50;
+    private final int POPULATION_SIZE_INITIAL = 250;
+    private final int VIRUS_CLUSTER_CREATURE_COUNT = 4;
+    private final int ANTI_VIRUS_CLUSTER_CREATURE_COUNT = 3;
+    private final int ITERATIONS_PER_GENERATION = 3; //must be smaller than population size
 
     private int currentCluster;
     private int currentIteration;
@@ -50,10 +50,10 @@ public class VirusSimulator {
 
             //the anti virus cluster's fitness depends on its own fitness and the opposite of virus's fitness
             float antiVirusFitness = antiVirusClusters.get(currentCluster).getFitness();
-            antiVirusFitness *= 0.50; //25& of the antivirus's fitness depends on its own distance from the right side
+            antiVirusFitness *= 0.00; //25& of the antivirus's fitness depends on its own distance from the right side
 //            antiVirusFitness += (world.getWidth() - virusClusters.get(currentCluster).getFitness()) * 0.5; //75% of its fitness depends on how close the virus is to its side
-            float invertedVirusFitness = virusClusters.get(currentCluster).getFitness();
-            antiVirusFitness += invertedVirusFitness * 0.50;
+            float invertedVirusFitness = world.getWidth() - virusClusters.get(currentCluster).getFitnessNoLaser();
+            antiVirusFitness += invertedVirusFitness * 1;
 //            antiVirusFitness = Math.min(antiVirusFitness, invertedVirusFitness);
             antiVirusClusters.get(currentCluster).setFitness(antiVirusFitness, currentIteration);
             System.out.println("Virus " + currentCluster + " Average fitness: " + virusClusters.get(currentCluster).getAverageFitness());

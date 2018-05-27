@@ -25,13 +25,18 @@ public class World {
      * @param creature
      * @return true = success. false = fail (desired location is not null)
      */
-    public boolean addCreature(ICreature creature) {
+    public boolean addCreature(ICreature creature, boolean active) {
         int creatureX = creature.getX();
         int creatureY = creature.getY();
 
         if (creatureGrid.get(creatureX, creatureY) == null) {
             //There is no creature at this location, create one there
-            creatures.add(creature);
+            if (active) {
+                creatures.add(creature);
+            } else {
+                nonRunnableCreatures.add(creature);
+            }
+
             creatureGrid.set(creatureX, creatureY, creature);
             return true; //success
         } else {
@@ -45,10 +50,11 @@ public class World {
      * @return true = success, false = fail (creature doesn't exist)
      */
     public boolean removeCreature(ICreature creature) {
-        if (creatures.contains(creature)) {
+        if (creatures.contains(creature) || nonRunnableCreatures.contains(creature)) {
             //this creature exists, delete it from both arrays
             creatureGrid.set(creature.getX(), creature.getY(), null);
             creatures.remove(creature);
+            nonRunnableCreatures.remove(creature);
             return true; //success
         } else {
             //this creature does not exist, can't remove it
@@ -74,35 +80,8 @@ public class World {
         }
     }
 
-    public boolean addNonRunnableCreature(ICreature creature) {
-        int creatureX = creature.getX();
-        int creatureY = creature.getY();
-
-        if (creatureGrid.get(creatureX, creatureY) == null) {
-            //There is no creature at this location, create one there
-            nonRunnableCreatures.add(creature);
-            creatureGrid.set(creatureX, creatureY, creature);
-            return true; //success
-        } else {
-            //There's already a creature here, we cannot make a creature
-            return false; //fail
-        }
-    }
-
     public ICreature getCreature(int x, int y) {
         return creatureGrid.get(x, y);
-    }
-
-    public boolean removeNonRunnableCreature(ICreature creature) {
-        if (nonRunnableCreatures.contains(creature)) {
-            //this creature exists, delete it from both arrays
-            creatureGrid.set(creature.getX(), creature.getY(), null);
-            nonRunnableCreatures.remove(creature);
-            return true; //success
-        } else {
-            //this creature does not exist, can't remove it
-            return false; //failed
-        }
     }
 
     public void clear() {
@@ -127,8 +106,11 @@ public class World {
     }
 
     public void run() {
-        for (ICreature creature : creatures) {
-            creature.run();
+//        for (ICreature creature : creatures) {
+//            creature.run();
+//        }
+        for (int i = 0; i < creatures.size(); i++) {
+            creatures.get(i).run();
         }
     }
 

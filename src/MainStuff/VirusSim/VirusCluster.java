@@ -3,12 +3,15 @@ package MainStuff.VirusSim;
 import MainStuff.VirusSim.Genetics.DNA;
 import MainStuff.VirusSim.Cells.NonActive.VirusWall;
 import MainStuff.World;
+import Utilities.FastRand;
 
 import java.util.ArrayList;
 
 public class VirusCluster {
     private int creatureCount;
     private int actions;
+
+    private int lasersShot;
 
     private ArrayList<VirusCreature> creatures;
     private ArrayList<Float> fitnesses;
@@ -43,18 +46,19 @@ public class VirusCluster {
 
     public void start() {
         creatures.clear();
+        lasersShot = 0;
         for (int i = 0; i < creatureCount; i++) {
-            VirusCreature newCreature = new VirusCreature(1, (int) ((i / (float) this.creatureCount) * world.getHeight()), dnaArrayList.get(i), world);
+            VirusCreature newCreature = new VirusCreature(1, (int) ((i / (float) this.creatureCount) * world.getHeight()), dnaArrayList.get(i), world, this);
             creatures.add(newCreature);
         }
 
         //create the virus's stating wall
         for (int i = 0; i < world.getHeight(); i++) {
-            world.addNonRunnableCreature(new VirusWall(0, i));
+            world.addCreature(new VirusWall(0, i), false);
         }
         //add all of the pre-constructed creatures to the world
         for (VirusCreature virusCreature : creatures) {
-            world.addCreature(virusCreature);
+            world.addCreature(virusCreature, true);
         }
     }
 
@@ -67,6 +71,18 @@ public class VirusCluster {
         for (VirusCreature virusCreature : creatures) {
             averageX += virusCreature.getX();
         }
+        averageX -= lasersShot * 2;
+        averageX /= creatures.size();
+
+        return averageX;
+    }
+
+    public float getFitnessNoLaser() {
+        float averageX = 0;
+        for (VirusCreature virusCreature : creatures) {
+            averageX += virusCreature.getX();
+        }
+//        averageX -= lasersShot * 0.5;
         averageX /= creatures.size();
 
         return averageX;
@@ -123,5 +139,9 @@ public class VirusCluster {
 
     public void clearFitness() {
         fitnesses.clear();
+    }
+
+    public void recordLaserShot() {
+        lasersShot++;
     }
 }

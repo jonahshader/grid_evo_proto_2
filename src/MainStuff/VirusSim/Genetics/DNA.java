@@ -10,7 +10,8 @@ public class DNA {
 
     /**
      * generates a random sequence of DNA
-     * @param sequenceLength -number of actions
+     *
+     * @param sequenceLength     -number of actions
      * @param independentActions -how many possible actions one give action can be
      */
     public DNA(int sequenceLength, int independentActions) {
@@ -41,11 +42,9 @@ public class DNA {
     }
 
     public void mutate() {
-        if (FastRand.splittableRandom.nextDouble() < 0.5) {
-            for (int i = 0; i < dna.size(); i++) {
-                if (FastRand.splittableRandom.nextDouble() < 0.03) {
-                    dna.set(i, FastRand.splittableRandom.nextInt(independentActions));
-                }
+        for (int i = 0; i < dna.size(); i++) {
+            if (FastRand.splittableRandom.nextDouble() < 0.05) {
+                dna.set(i, FastRand.splittableRandom.nextInt(independentActions));
             }
         }
     }

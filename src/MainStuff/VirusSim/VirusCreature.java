@@ -34,6 +34,7 @@ public class VirusCreature implements ICreature {
 
     protected DNA dna;
     protected World containingWorld;
+    private VirusCluster containingCluster;
 
     /**
      * creates a virus creature with random genetics
@@ -43,12 +44,13 @@ public class VirusCreature implements ICreature {
      * @param actions         number of actions in actionList
      * @param containingWorld
      */
-    public VirusCreature(int x, int y, int actions, World containingWorld) {
+    public VirusCreature(int x, int y, int actions, World containingWorld, VirusCluster containingCluster) {
         //Pass parameters
         this.x = x;
         this.y = y;
         this.actions = actions;
         this.containingWorld = containingWorld;
+        this.containingCluster = containingCluster;
 
         //Initialize other variables
         age = 0;
@@ -66,12 +68,13 @@ public class VirusCreature implements ICreature {
      * @param dna
      * @param containingWorld
      */
-    public VirusCreature(int x, int y, DNA dna, World containingWorld) {
+    public VirusCreature(int x, int y, DNA dna, World containingWorld, VirusCluster containingCluster) {
         //pass params
         this.x = x;
         this.y = y;
         this.dna = dna;
         this.containingWorld = containingWorld;
+        this.containingCluster = containingCluster;
 
         actions = dna.getSize();
 
@@ -82,12 +85,13 @@ public class VirusCreature implements ICreature {
     }
 
     //this is for child classes
-    protected VirusCreature(int x, int y, int actions, int independentActions, World containingWorld) {
+    protected VirusCreature(int x, int y, int actions, int independentActions, World containingWorld, VirusCluster containingCluster) {
         //pass params
         this.x = x;
         this.y = y;
         this.actions = actions;
         this.containingWorld = containingWorld;
+        this.containingCluster = containingCluster;
 
         //init other vars
         age = 0;
@@ -124,7 +128,7 @@ public class VirusCreature implements ICreature {
                     case 4: //explode
                         if (!abilityUsed)
                             explode();
-                        abilityUsed = true;
+//                        abilityUsed = true;
                         break;
 
                     case 5: //do nothing
@@ -159,21 +163,17 @@ public class VirusCreature implements ICreature {
     }
 
     private void explode() {
-        for (int i = 1; i < 4; i++) {
+        for (int i = 1; i < 3; i++) {
             ICreature explodedCreature = containingWorld.getCreature(x + i, y);
             if (explodedCreature != null) {
                 if (explodedCreature.getCreatureType() == ANTIVIRUS_BLOCK) {
-//                    System.out.println("Exploded stuff");
-                    containingWorld.removeNonRunnableCreature(explodedCreature);
-                    ICreature virusLaser = new VirusLaser(x + i, y, containingWorld);
-                    if (containingWorld.addCreature(virusLaser)) {
-                        System.out.println("shot laser");
-                    } else {
-                        System.out.println("faild to shoot laser");
-                    }
+                    containingWorld.removeCreature(explodedCreature);
                 }
             }
+            ICreature virusLaser = new VirusLaser(x + i, y, containingWorld);
+            containingWorld.addCreature(virusLaser, true);
         }
+        containingCluster.recordLaserShot();
     }
 
     @Override
