@@ -8,11 +8,11 @@ import processing.core.PGraphics;
 import java.util.ArrayList;
 
 public class VirusSimulator {
-    private final int TIME_REMAINING_INITIAL = 200;
-    private final int POPULATION_SIZE_INITIAL = 350;
-    private final int VIRUS_CLUSTER_CREATURE_COUNT = 20;
+    private final int TIME_REMAINING_INITIAL = 300;
+    private final int POPULATION_SIZE_INITIAL = 50;
+    private final int VIRUS_CLUSTER_CREATURE_COUNT = 10;
     private final int ANTI_VIRUS_CLUSTER_CREATURE_COUNT = 20;
-    private final int ITERATIONS_PER_GENERATION = 6; //must be smaller than population size
+    private final int ITERATIONS_PER_GENERATION = 4; //must be smaller than population size
 
     private int currentCluster;
     private int currentIteration;
@@ -47,19 +47,16 @@ public class VirusSimulator {
         world.run();
         if (virusClusters.get(currentCluster).isDone() && antiVirusClusters.get(currentCluster).isDone()) {
             //setup next pair
-//            System.out.println("Fitness: " + virusClusters.get(currentCluster).getFitness());
             virusClusters.get(currentCluster).recordFitness(currentIteration); //the virus cluster can determine it's own fitness.
 
             //the anti virus cluster's fitness depends on its own fitness and the opposite of virus's fitness
             float antiVirusFitness = antiVirusClusters.get(currentCluster).getFitness();
             antiVirusFitness *= 0.1; //25& of the antivirus's fitness depends on its own distance from the right side
-//            antiVirusFitness += (world.getWidth() - virusClusters.get(currentCluster).getFitness()) * 0.5; //75% of its fitness depends on how close the virus is to its side
             float invertedVirusFitness = world.getWidth() - virusClusters.get(currentCluster).getFitnessNoLaser();
             antiVirusFitness += invertedVirusFitness * 0.9;
-//            antiVirusFitness = Math.min(antiVirusFitness, invertedVirusFitness);
             antiVirusClusters.get(currentCluster).setFitness(antiVirusFitness, currentIteration);
-            System.out.print("Gen " + generation + " Virus " + currentCluster + " Average fitness: " + virusClusters.get(currentCluster).getAverageFitness());
-            System.out.println(" AntiVirus average fitness: " + antiVirusClusters.get(currentCluster).getAverageFitness());
+            System.out.print("Gen " + generation + " Virus " + currentCluster + " Average fitness: " + String.format("%.2f", virusClusters.get(currentCluster).getAverageFitness()));
+            System.out.println(" AntiVirus average fitness: " + String.format("%.2f", antiVirusClusters.get(currentCluster).getAverageFitness()));
             currentCluster++;
             world.clear();
 
@@ -67,11 +64,10 @@ public class VirusSimulator {
             if (currentCluster >= POPULATION_SIZE_INITIAL) {
                 currentCluster = 0;
                 currentIteration++;
-                //if we ran the last iteration, run
+                //if we ran the last iteration, setup next generation
                 if (currentIteration >= ITERATIONS_PER_GENERATION) {
                     currentIteration = 0;
                     //next generation
-//                    System.out.println("next generation");
                     generation++;
                     VirusCluster bestVirusCluster = virusClusters.get(0); //init to first one
                     float bestFitness = virusClusters.get(0).getAverageFitness();
@@ -95,8 +91,6 @@ public class VirusSimulator {
                     ArrayList<DNA> bestVirusDNA = bestVirusCluster.getDnaArrayList();
                     ArrayList<DNA> bestAntiVirusDNA = bestAntiVirusCluster.getDnaArrayList();
 
-
-
                     for (int i = 0; i < virusClusters.size(); i++) {
                         virusClusters.get(i).clearFitness();
                         virusClusters.get(i).setNewDNA(bestVirusDNA);
@@ -119,7 +113,6 @@ public class VirusSimulator {
                     antiVirusClusters.add(0, antiVirusClusters.get(antiVirusClusters.size() - 1));
                     antiVirusClusters.remove(antiVirusClusters.size() - 1);
                 }
-
             }
             virusClusters.get(currentCluster).start();
             antiVirusClusters.get(currentCluster).start();

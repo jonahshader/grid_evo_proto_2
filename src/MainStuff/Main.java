@@ -7,8 +7,8 @@ import processing.core.PApplet;
 import processing.core.PGraphics;
 
 public class Main extends PApplet {
-    public final int WORLD_WIDTH = 160;
-    public final int WORLD_HEIGHT = 200;
+    public final int WORLD_WIDTH = 120;
+    public final int WORLD_HEIGHT = 110;
 
     boolean fastMode = false;
 

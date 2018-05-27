@@ -10,6 +10,8 @@ import java.util.ArrayList;
 public class AntiVirusCluster {
     private int creatureCount;
     private int actions;
+    private float fitness;
+    private boolean fitnessUpToDate;
 
     private ArrayList<AntiVirusCreature> creatures;
     private ArrayList<Float> fitnesses;
@@ -33,6 +35,8 @@ public class AntiVirusCluster {
         }
 
         //init other vars
+        fitness = 0;
+        fitnessUpToDate = false;
         creatures = new ArrayList<>();
         fitnesses = new ArrayList<>();
         dnaArrayList = new ArrayList<>();
@@ -79,6 +83,7 @@ public class AntiVirusCluster {
         } else {
             fitnesses.add(run, fitness);
         }
+        fitnessUpToDate = false;
     }
 
     public float getFitness() {
@@ -92,15 +97,21 @@ public class AntiVirusCluster {
     }
 
     public float getAverageFitness() {
-        if (fitnesses.size() > 0) {
-            float avg = 0;
-            for (Float f : fitnesses) {
-                avg += f;
-            }
-            avg /= fitnesses.size();
-            return avg;
+        if (fitnessUpToDate) {
+            return fitness;
         } else {
-            return 0;
+            if (fitnesses.size() > 0) {
+                float avg = 0;
+                for (Float f : fitnesses) {
+                    avg += f;
+                }
+                avg /= fitnesses.size();
+                fitness = avg;
+                fitnessUpToDate = true;
+                return avg;
+            } else {
+                return 0;
+            }
         }
     }
 

@@ -1,15 +1,16 @@
 package MainStuff.VirusSim;
 
-import MainStuff.VirusSim.Genetics.DNA;
 import MainStuff.VirusSim.Cells.NonActive.VirusWall;
+import MainStuff.VirusSim.Genetics.DNA;
 import MainStuff.World;
-import Utilities.FastRand;
 
 import java.util.ArrayList;
 
 public class VirusCluster {
     private int creatureCount;
     private int actions;
+    private float fitness;
+    private boolean fitnessUpToDate;
 
     private int lasersShot;
 
@@ -21,8 +22,9 @@ public class VirusCluster {
 
     /**
      * generate random virus cluster
+     *
      * @param creatureCount cant be greater than screen height
-     * @param actions number of actions (DNA/genetics length)
+     * @param actions       number of actions (DNA/genetics length)
      * @param world
      */
     public VirusCluster(int creatureCount, int actions, World world) {
@@ -36,6 +38,8 @@ public class VirusCluster {
         }
 
         //init other vars
+        fitness = 0;
+        fitnessUpToDate = false;
         creatures = new ArrayList<>();
         fitnesses = new ArrayList<>();
         dnaArrayList = new ArrayList<>();
@@ -51,7 +55,6 @@ public class VirusCluster {
             VirusCreature newCreature = new VirusCreature(1, 1 + (int) ((i / (float) this.creatureCount) * (world.getHeight() - 1)), dnaArrayList.get(i), world, this);
             creatures.add(newCreature);
         }
-
 
 
         //create the virus's stating wall
@@ -70,7 +73,6 @@ public class VirusCluster {
     }
 
     /**
-     *
      * @return fitness is average x distance away from left side
      */
     public float getFitness() {
@@ -80,7 +82,6 @@ public class VirusCluster {
         }
         averageX -= lasersShot * 0.75;
         averageX /= creatures.size();
-
         return averageX;
     }
 
@@ -96,6 +97,7 @@ public class VirusCluster {
     }
 
     public void recordFitness(int run) {
+        fitnessUpToDate = false;
         if (fitnesses.size() < run) {
             fitnesses.set(run, getFitness());
         } else {
@@ -115,16 +117,23 @@ public class VirusCluster {
     }
 
     public float getAverageFitness() {
-        if (fitnesses.size() > 0) {
-            float avg = 0;
-            for (Float f : fitnesses) {
-                avg += f;
-            }
-            avg /= fitnesses.size();
-            return avg;
+        if (fitnessUpToDate) {
+            return fitness;
         } else {
-            return 0;
+            if (fitnesses.size() > 0) {
+                float avg = 0;
+                for (Float f : fitnesses) {
+                    avg += f;
+                }
+                avg /= fitnesses.size();
+                fitness = avg;
+                fitnessUpToDate = true;
+                return avg;
+            } else {
+                return 0;
+            }
         }
+
     }
 
     public ArrayList<DNA> getDnaArrayList() {
