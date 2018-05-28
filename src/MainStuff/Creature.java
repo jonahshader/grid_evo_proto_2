@@ -77,4 +77,5 @@ public class Creature implements ICreature {
     public CreatureType getCreatureType() {
         return null;
     }
+
 }

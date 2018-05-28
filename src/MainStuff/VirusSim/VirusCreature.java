@@ -126,8 +126,8 @@ public class VirusCreature implements ICreature {
                         break;
 
                     case 4: //explode
-                        if (!abilityUsed)
-                            explode();
+//                        if (!abilityUsed)
+//                            explode();
 //                        abilityUsed = true;
 //                        newX++;
                         break;

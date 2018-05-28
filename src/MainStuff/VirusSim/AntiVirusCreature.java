@@ -1,7 +1,8 @@
 package MainStuff.VirusSim;
 
-import MainStuff.VirusSim.Genetics.DNA;
+import MainStuff.ICreature;
 import MainStuff.VirusSim.Cells.NonActive.AntiVirusBlock;
+import MainStuff.VirusSim.Genetics.DNA;
 import MainStuff.World;
 import Utilities.CirclePoints;
 import processing.core.PGraphics;
@@ -12,7 +13,7 @@ import static processing.core.PConstants.CORNER;
 
 public class AntiVirusCreature extends VirusCreature {
     static final int ACTION_ENUM_COUNT = 11;
-    private final int BLOCKER_RADIUS = 3;
+    private final int BLOCKER_RADIUS = 5;
     //int value actions:
     /*
     0: left
@@ -37,6 +38,7 @@ public class AntiVirusCreature extends VirusCreature {
 
     /**
      * creates an antivirus creature with random genetics
+     *
      * @param x
      * @param y
      * @param actions
@@ -51,6 +53,7 @@ public class AntiVirusCreature extends VirusCreature {
 
     /**
      * creates an antivirus creature with specific DNA
+     *
      * @param x
      * @param y
      * @param dna
@@ -89,19 +92,27 @@ public class AntiVirusCreature extends VirusCreature {
                         break;
 
                     case 4: //left x2
-                        newX -= 2;
+//                        newX -= 2;
+                        newX--;
+                        newY--;
                         break;
 
                     case 5: //right x2
-                        newX += 2;
+//                        newX += 2;
+                        newX--;
+                        newY++;
                         break;
 
                     case 6: //up x2
-                        newY -= 2;
+//                        newY -= 2;
+                        newX++;
+                        newY--;
                         break;
 
                     case 7: //down x2
-                        newY += 2;
+//                        newY += 2;
+                        newX++;
+                        newY++;
                         break;
 
                     case 8: //release antivirus blocker
@@ -114,7 +125,7 @@ public class AntiVirusCreature extends VirusCreature {
                         break;
 
                     case 9: //eat virus
-                        eatVirus();
+//                        eatVirus();
                         break;
 
                     case 10: //do nothing
@@ -141,20 +152,28 @@ public class AntiVirusCreature extends VirusCreature {
     }
 
     private void eatVirus() {
-//        ArrayList<ICreature> adjacentCreatures = new ArrayList<>();
-//        ArrayList<CirclePoints.PointInt> points = CirclePoints.generateCircle(x, y, 2);
-//        for (CirclePoints.PointInt point : points) {
-//            adjacentCreatures.add(containingWorld.getCreature(point.x, point.y));
-//        }
-//
-//        for (ICreature creature : adjacentCreatures) {
-//            if (creature != null) {
-////                if (creature.getCreatureType() == CreatureType.VIRUS || creature.getCreatureType() == CreatureType.ANTIVIRUS_BLOCK) {
-//                    if (creature.getCreatureType() == CreatureType.VIRUS) {
-//                    containingWorld.removeCreature(creature);
-//                }
-//            }
-//        }
+        ArrayList<ICreature> adjacentCreatures = new ArrayList<>();
+        ArrayList<CirclePoints.PointInt> points = CirclePoints.generateCircle(x, y, 2);
+        for (CirclePoints.PointInt point : points) {
+            adjacentCreatures.add(containingWorld.getCreature(point.x, point.y));
+        }
+
+        ArrayList<ICreature> nonRepeatsAdjacentCreatures = new ArrayList<>();
+        for (ICreature creature : adjacentCreatures) {
+            if (!nonRepeatsAdjacentCreatures.contains(creature)) {
+                nonRepeatsAdjacentCreatures.add(creature);
+            }
+        }
+        for (ICreature creature : nonRepeatsAdjacentCreatures) {
+            if (creature != null) {
+//                if (creature.getCreatureType() == CreatureType.VIRUS || creature.getCreatureType() == CreatureType.ANTIVIRUS_BLOCK) {
+                if (creature.getCreatureType() == CreatureType.VIRUS) {
+                    System.out.println("before creature remove");
+                    containingWorld.removeCreature(creature);
+                    System.out.println("after creature remove " + creature);
+                }
+            }
+        }
     }
 
     private void releaseBlocker() {

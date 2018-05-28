@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 public class World {
     private int width, height;
-    private ArrayList<ICreature> creatures, nonRunnableCreatures;
+    private ArrayList<ICreature> creatures, nonRunnableCreatures, creaturesRemoveQueue, nonRunnableCreaturesRemoveQueue;
     private WrappingCreatureArray creatureGrid;
 
     public World(int width, int height) {
@@ -16,6 +16,8 @@ public class World {
 
         creatures = new ArrayList<>();
         nonRunnableCreatures = new ArrayList<>();
+        creaturesRemoveQueue = new ArrayList<>();
+        nonRunnableCreaturesRemoveQueue = new ArrayList<>();
         creatureGrid = new WrappingCreatureArray(new ICreature[width][height]);
     }
 
@@ -33,8 +35,10 @@ public class World {
             //There is no creature at this location, create one there
             if (active) {
                 creatures.add(creature);
+//                creaturesAddQueue.add(creature);
             } else {
                 nonRunnableCreatures.add(creature);
+//                nonRunnableCreaturesAddQueue.add(creature);
             }
 
             creatureGrid.set(creatureX, creatureY, creature);
@@ -53,8 +57,10 @@ public class World {
         if (creatures.contains(creature) || nonRunnableCreatures.contains(creature)) {
             //this creature exists, delete it from both arrays
             creatureGrid.set(creature.getX(), creature.getY(), null);
-            creatures.remove(creature);
-            nonRunnableCreatures.remove(creature);
+//            creatures.remove(creature);
+//            nonRunnableCreatures.remove(creature);
+            creaturesRemoveQueue.add(creature);
+            nonRunnableCreaturesRemoveQueue.add(creature);
             return true; //success
         } else {
             //this creature does not exist, can't remove it
@@ -86,8 +92,10 @@ public class World {
 
     public void clear() {
         creatureGrid = new WrappingCreatureArray(new ICreature[width][height]);
-        nonRunnableCreatures.clear();
         creatures.clear();
+        nonRunnableCreatures.clear();
+        creaturesRemoveQueue.clear();
+        nonRunnableCreaturesRemoveQueue.clear();
     }
 
     /**
@@ -96,20 +104,23 @@ public class World {
      * @param screenBuffer -the buffer we are drawing to
      */
     public void draw(PGraphics screenBuffer) {
-        for (ICreature creature : creatures) {
-            creature.draw(screenBuffer);
-        }
-
-        for (ICreature creature : nonRunnableCreatures) {
-            creature.draw(screenBuffer);
-        }
+        creatures.forEach(creature -> creature.draw(screenBuffer));
+        nonRunnableCreatures.forEach(creature -> creature.draw(screenBuffer));
     }
 
     public void run() {
-//        for (ICreature creature : creatures) {
-//            creature.run();
+        creatures.removeAll(creaturesRemoveQueue);
+        nonRunnableCreatures.removeAll(nonRunnableCreaturesRemoveQueue);
+//        for (ICreature creature : creaturesRemoveQueue) {
+//            creatureGrid.set(creature.getX(), creature.getY(), null);
 //        }
-        for (int i = 0; i < creatures.size(); i++) {
+//        for (ICreature creature : nonRunnableCreaturesRemoveQueue) {
+//            creatureGrid.set(creature.getX(), creature.getY(), null);
+//        }
+        creaturesRemoveQueue.clear();
+        nonRunnableCreaturesRemoveQueue.clear();
+
+        for (int i = 0, creaturesSize = creatures.size(); i < creaturesSize; i++) {
             creatures.get(i).run();
         }
     }
@@ -121,4 +132,5 @@ public class World {
     public int getHeight() {
         return height;
     }
+
 }

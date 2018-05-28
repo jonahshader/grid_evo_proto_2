@@ -7,7 +7,7 @@ import processing.core.PApplet;
 import processing.core.PGraphics;
 
 public class Main extends PApplet {
-    public final int WORLD_WIDTH = 20;
+    public final int WORLD_WIDTH = 26;
     public final int WORLD_HEIGHT = 30;
 
     boolean fastMode = false;
@@ -17,13 +17,13 @@ public class Main extends PApplet {
 
     @Override
     public void settings() {
-        size(400, 600);
+        size(WORLD_WIDTH * 8, WORLD_HEIGHT * 8);
         noSmooth();
     }
 
     @Override
     public void setup() {
-        frameRate(60);
+        frameRate(15);
         surface.setResizable(true);
         blendMode(BLEND);
         screenBuffer = createGraphics(WORLD_WIDTH, WORLD_HEIGHT);
@@ -42,8 +42,10 @@ public class Main extends PApplet {
             for (int i = 0; i < 30000; i++) {
                 simulator.run();
             }
+            surface.setTitle("FPS: " + frameRate * 30000);
         } else {
             simulator.run();
+            surface.setTitle("FPS: " + frameRate);
         }
 
         screenBuffer.beginDraw();                        //Begin drawing to buffer
@@ -62,7 +64,7 @@ public class Main extends PApplet {
     public void keyPressed() {
         if (key == 'o' || key == 'O') {
             fastMode = !fastMode;
-            frameRate(fastMode ? 1000 : 30);
+            frameRate(fastMode ? 1000 : 15);
         }
     }
 

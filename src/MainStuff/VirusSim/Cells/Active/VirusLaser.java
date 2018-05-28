@@ -31,7 +31,7 @@ public class VirusLaser extends VirusWall {
 
     @Override
     public void run() {
-        if (age > 1) {
+        if (age > 6) {
             containingWorld.removeCreature(this);
         }
         age++;

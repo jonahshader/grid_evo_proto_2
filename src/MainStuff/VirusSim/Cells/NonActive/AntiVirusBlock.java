@@ -5,9 +5,9 @@ import processing.core.PGraphics;
 import static processing.core.PConstants.CORNER;
 
 public class AntiVirusBlock extends VirusWall {
-    private final float R = 70;
-    private final float G = 90;
-    private final float B = 100;
+    private final float R = 80;
+    private final float G = 70;
+    private final float B = 120;
 
     public AntiVirusBlock(int x, int y) {
         super(x, y);

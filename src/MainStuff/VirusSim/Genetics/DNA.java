@@ -42,7 +42,7 @@ public class DNA {
 
     public void mutate() {
         for (int i = 0; i < dna.size(); i++) {
-            if (FastRand.splittableRandom.nextDouble() < 0.025) {
+            if (FastRand.splittableRandom.nextDouble() < 0.00125) {
                 dna.set(i, FastRand.splittableRandom.nextInt(independentActions));
             }
         }
