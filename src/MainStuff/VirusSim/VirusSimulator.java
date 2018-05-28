@@ -9,11 +9,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class VirusSimulator {
-    private final int TIME_REMAINING_INITIAL = 126;
-    private final int POPULATION_SIZE_INITIAL = 80;
-    private final int VIRUS_CLUSTER_CREATURE_COUNT = 6;
-    private final int ANTI_VIRUS_CLUSTER_CREATURE_COUNT = 10;
-    private final int ITERATIONS_PER_GENERATION = 5; //must be smaller than population size
+    private final int TIME_REMAINING_INITIAL; //126
+    private final int POPULATION_SIZE_INITIAL; //80
+    private final int VIRUS_CLUSTER_CREATURE_COUNT; //6
+    private final int ANTI_VIRUS_CLUSTER_CREATURE_COUNT; //10
+    private final int ITERATIONS_PER_GENERATION; // 5must be smaller than population size
 
     private int currentCluster;
     private int currentIteration;
@@ -24,8 +24,14 @@ public class VirusSimulator {
 
     private World world;
 
-    public VirusSimulator(int width, int height) {
+    public VirusSimulator(int width, int height, int timeRemainingInitial, int populationSizeInitial, int virusClusterCreatureCount, int antiVirusClusterCreatureCount, int iterationsPerGeneration) {
         //init other vars
+        TIME_REMAINING_INITIAL = timeRemainingInitial;
+        POPULATION_SIZE_INITIAL = populationSizeInitial;
+        VIRUS_CLUSTER_CREATURE_COUNT = virusClusterCreatureCount;
+        ANTI_VIRUS_CLUSTER_CREATURE_COUNT = antiVirusClusterCreatureCount;
+        ITERATIONS_PER_GENERATION = iterationsPerGeneration;
+
         world = new World(width, height);
         virusClusters = new ArrayList<>(POPULATION_SIZE_INITIAL);
         antiVirusClusters = new ArrayList<>(POPULATION_SIZE_INITIAL);

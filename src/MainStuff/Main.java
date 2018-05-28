@@ -1,14 +1,24 @@
 package MainStuff;
 
 import MainStuff.VirusSim.VirusSimulator;
-import Utilities.CirclePoints;
-import Utilities.FastRand;
 import processing.core.PApplet;
 import processing.core.PGraphics;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.Properties;
+
 public class Main extends PApplet {
-    public final int WORLD_WIDTH = 26;
-    public final int WORLD_HEIGHT = 30;
+    public int worldWidth = 26;
+    public int worldHeight = 30;
+    private int timeRemainingInitial = 126;
+    private int populationSizeInitial = 80;
+    private int virusClusterCreatureCount = 6;
+    private int antiVirusClusterCreatureCount = 10;
+    private int iterationsPerGeneration = 5;
+
+    public static double mutationRate = 0.00125;
+
 
     boolean fastMode = false;
 
@@ -17,18 +27,40 @@ public class Main extends PApplet {
 
     @Override
     public void settings() {
-        size(WORLD_WIDTH * 8, WORLD_HEIGHT * 8);
+        size(worldWidth * 8, worldHeight * 8);
         noSmooth();
     }
 
     @Override
     public void setup() {
+        Properties simulationProperties = new Properties();
+        try {
+            simulationProperties.load(new FileInputStream("settings.properties"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        String widthString = simulationProperties.getProperty("world_width");
+        String heightString = simulationProperties.getProperty("world_height");
+        String timeRemainingString = simulationProperties.getProperty("cycles_per_episode");
+        String populationSizeString = simulationProperties.getProperty("population_size");
+        String virusCountString = simulationProperties.getProperty("virus_count");
+        String antiVirusCountString = simulationProperties.getProperty("antivirus_count");
+        String iterationsPerGenerationString = simulationProperties.getProperty("iterations_per_generation");
+        String mutationRateString = simulationProperties.getProperty("mutation_rate");
+
+        worldWidth = Integer.parseInt(widthString);
+        worldHeight = Integer.parseInt(heightString);
+        mutationRate = Double.parseDouble(mutationRateString);
+
         frameRate(15);
         surface.setResizable(true);
         blendMode(BLEND);
-        screenBuffer = createGraphics(WORLD_WIDTH, WORLD_HEIGHT);
+        screenBuffer = createGraphics(worldWidth, worldHeight);
         screenBuffer.noSmooth();
-        simulator = new VirusSimulator(WORLD_WIDTH, WORLD_HEIGHT);
+
+
+//        simulator = new VirusSimulator(worldWidth, worldHeight, timeRemainingInitial, populationSizeInitial, virusClusterCreatureCount, antiVirusClusterCreatureCount, iterationsPerGeneration);
+        simulator = new VirusSimulator(Integer.parseInt(widthString), Integer.parseInt(heightString), Integer.parseInt(timeRemainingString), Integer.parseInt(populationSizeString), Integer.parseInt(virusCountString), Integer.parseInt(antiVirusCountString), Integer.parseInt(iterationsPerGenerationString));
 
         screenBuffer.beginDraw();
         screenBuffer.background(0);

@@ -4,6 +4,8 @@ import Utilities.FastRand;
 
 import java.util.ArrayList;
 
+import static MainStuff.Main.mutationRate;
+
 public class DNA {
     private ArrayList<Integer> dna;
     private int independentActions;
@@ -42,7 +44,7 @@ public class DNA {
 
     public void mutate() {
         for (int i = 0; i < dna.size(); i++) {
-            if (FastRand.splittableRandom.nextDouble() < 0.00125) {
+            if (FastRand.splittableRandom.nextDouble() < mutationRate) {
                 dna.set(i, FastRand.splittableRandom.nextInt(independentActions));
             }
         }
