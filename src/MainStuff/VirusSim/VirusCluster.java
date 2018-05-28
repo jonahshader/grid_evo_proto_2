@@ -141,10 +141,7 @@ public class VirusCluster {
     }
 
     public void setNewDNA(ArrayList<DNA> newDNA) {
-        dnaArrayList = new ArrayList<>();
-        for (int i = 0; i < newDNA.size(); i++) {
-            dnaArrayList.add(new DNA(newDNA.get(i)));
-        }
+        dnaArrayList = newDNA;
     }
 
     public void mutateDNA() {
@@ -155,6 +152,7 @@ public class VirusCluster {
 
     public void clearFitness() {
         fitnesses.clear();
+        fitnessUpToDate = false;
     }
 
     public void recordLaserShot() {

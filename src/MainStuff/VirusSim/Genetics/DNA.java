@@ -36,7 +36,6 @@ public class DNA {
         dna.set(index, action);
     }
 
-
     public int getSize() {
         return dna.size();
     }
@@ -47,5 +46,13 @@ public class DNA {
                 dna.set(i, FastRand.splittableRandom.nextInt(independentActions));
             }
         }
+    }
+
+    public static ArrayList<DNA> getClusterClone(ArrayList<DNA> toClone) {
+        ArrayList<DNA> dnaArrayList = new ArrayList<>();
+        for (int i = 0; i < toClone.size(); i++) {
+            dnaArrayList.add(new DNA(toClone.get(i)));
+        }
+        return dnaArrayList;
     }
 }
