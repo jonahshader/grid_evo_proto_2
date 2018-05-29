@@ -19,6 +19,8 @@ public class Main extends PApplet {
 
     public static double mutationRate = 0.00125;
 
+    String widthString, heightString, timeRemainingString, populationSizeString, virusCountString, antiVirusCountString, iterationsPerGenerationString, mutationRateString;
+
 
     boolean fastMode = false;
 
@@ -27,30 +29,30 @@ public class Main extends PApplet {
 
     @Override
     public void settings() {
-        size(worldWidth * 8, worldHeight * 8);
-        noSmooth();
-    }
-
-    @Override
-    public void setup() {
         Properties simulationProperties = new Properties();
         try {
             simulationProperties.load(new FileInputStream("settings.properties"));
         } catch (IOException e) {
             e.printStackTrace();
         }
-        String widthString = simulationProperties.getProperty("world_width");
-        String heightString = simulationProperties.getProperty("world_height");
-        String timeRemainingString = simulationProperties.getProperty("cycles_per_episode");
-        String populationSizeString = simulationProperties.getProperty("population_size");
-        String virusCountString = simulationProperties.getProperty("virus_count");
-        String antiVirusCountString = simulationProperties.getProperty("antivirus_count");
-        String iterationsPerGenerationString = simulationProperties.getProperty("iterations_per_generation");
-        String mutationRateString = simulationProperties.getProperty("mutation_rate");
+        widthString = simulationProperties.getProperty("world_width");
+        heightString = simulationProperties.getProperty("world_height");
+        timeRemainingString = simulationProperties.getProperty("cycles_per_episode");
+        populationSizeString = simulationProperties.getProperty("population_size");
+        virusCountString = simulationProperties.getProperty("virus_count");
+        antiVirusCountString = simulationProperties.getProperty("antivirus_count");
+        iterationsPerGenerationString = simulationProperties.getProperty("iterations_per_generation");
+        mutationRateString = simulationProperties.getProperty("mutation_rate");
 
         worldWidth = Integer.parseInt(widthString);
         worldHeight = Integer.parseInt(heightString);
         mutationRate = Double.parseDouble(mutationRateString);
+        size(worldWidth * 8, worldHeight * 8);
+        noSmooth();
+    }
+
+    @Override
+    public void setup() {
 
         frameRate(15);
         surface.setResizable(true);
