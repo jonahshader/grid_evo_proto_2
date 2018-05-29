@@ -3,7 +3,6 @@ package MainStuff.VirusSim;
 import MainStuff.VirusSim.Genetics.DNA;
 import MainStuff.VirusSim.Cells.NonActive.AntiVirusWall;
 import MainStuff.World;
-import Utilities.FastRand;
 
 import java.util.ArrayList;
 
@@ -49,7 +48,7 @@ public class AntiVirusCluster {
         creatures.clear();
         for (int i = 0; i < creatureCount; i++) {
 //            AntiVirusCreature newCreature = new AntiVirusCreature(world.getWidth() - 2, (int) ((i / (float) this.creatureCount) * world.getHeight()), actions, world);
-            AntiVirusCreature newCreature = new AntiVirusCreature(world.getWidth() - 2, 1 + (int) ((i / (float) this.creatureCount) * (world.getHeight() - 1)), dnaArrayList.get(i), world);
+            AntiVirusCreature newCreature = new AntiVirusCreature(world.getWidth() - 2, 1 + (int) ((i / (float) this.creatureCount) * (world.getHeight() - 1)), dnaArrayList.get(i), world, this);
             creatures.add(newCreature);
         }
 

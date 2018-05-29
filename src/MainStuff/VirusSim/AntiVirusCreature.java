@@ -34,6 +34,7 @@ public class AntiVirusCreature extends VirusCreature {
     private final int B = 255;
 
     boolean blockerReleased;
+    private final AntiVirusCluster containingCluster;
 
 
     /**
@@ -44,8 +45,9 @@ public class AntiVirusCreature extends VirusCreature {
      * @param actions
      * @param containingWorld
      */
-    public AntiVirusCreature(int x, int y, int actions, World containingWorld) {
+    public AntiVirusCreature(int x, int y, int actions, World containingWorld, AntiVirusCluster containingCluster) {
         super(x, y, actions, ACTION_ENUM_COUNT, containingWorld, null);
+        this.containingCluster = containingCluster;
 
         //init other vars
         blockerReleased = false;
@@ -53,14 +55,15 @@ public class AntiVirusCreature extends VirusCreature {
 
     /**
      * creates an antivirus creature with specific DNA
-     *
-     * @param x
+     *  @param x
      * @param y
      * @param dna
      * @param containingWorld
+     * @param containingCluster
      */
-    public AntiVirusCreature(int x, int y, DNA dna, World containingWorld) {
+    public AntiVirusCreature(int x, int y, DNA dna, World containingWorld, AntiVirusCluster containingCluster) {
         super(x, y, dna, containingWorld, null);
+        this.containingCluster = containingCluster;
 
         //init other vars
         blockerReleased = false;
@@ -133,8 +136,6 @@ public class AntiVirusCreature extends VirusCreature {
                     default: //default is do nothing
                         break;
                 }
-            } else {
-                done = true;
             }
 
             //If the creature tried to move, tell the containingWorld that we are trying to move
@@ -149,6 +150,7 @@ public class AntiVirusCreature extends VirusCreature {
         }
 
         age++;
+        done = age >= actions;
     }
 
     private void eatVirus() {

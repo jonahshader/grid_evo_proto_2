@@ -12,7 +12,7 @@ public class VirusCluster {
     private float fitness;
     private boolean fitnessUpToDate;
 
-    private int lasersShot;
+    private float miscFitness;
 
     private ArrayList<VirusCreature> creatures;
     private ArrayList<Float> fitnesses;
@@ -50,7 +50,7 @@ public class VirusCluster {
 
     public void start() {
         creatures.clear();
-        lasersShot = 0;
+        miscFitness = 0;
         for (int i = 0; i < creatureCount; i++) {
             VirusCreature newCreature = new VirusCreature(1, 1 + (int) ((i / (float) this.creatureCount) * (world.getHeight() - 1)), dnaArrayList.get(i), world, this);
             creatures.add(newCreature);
@@ -80,7 +80,7 @@ public class VirusCluster {
         for (VirusCreature virusCreature : creatures) {
             averageX += virusCreature.getX();
         }
-        averageX -= lasersShot * 0.75;
+        averageX += miscFitness;
         averageX /= creatures.size();
         return averageX;
     }
@@ -155,7 +155,7 @@ public class VirusCluster {
         fitnessUpToDate = false;
     }
 
-    public void recordLaserShot() {
-        lasersShot++;
+    public void recordFitnessChange(float deltaFitness) {
+        miscFitness += deltaFitness;
     }
 }

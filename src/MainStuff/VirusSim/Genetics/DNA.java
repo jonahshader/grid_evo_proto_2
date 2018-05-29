@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import static MainStuff.Main.mutationRate;
 
 public class DNA {
-    private ArrayList<Integer> dna;
+    private ArrayList<Byte> dna;
     private int independentActions;
 
     /**
@@ -20,21 +20,21 @@ public class DNA {
         this.independentActions = independentActions;
         dna = new ArrayList<>(sequenceLength);
         for (int i = 0; i < sequenceLength; i++) {
-            dna.add(FastRand.splittableRandom.nextInt(independentActions));
+            dna.add((byte) FastRand.splittableRandom.nextInt(independentActions));
         }
     }
 
     public DNA(DNA toClone) {
-        dna = (ArrayList<Integer>) toClone.dna.clone();
+        dna = (ArrayList<Byte>) toClone.dna.clone();
 //        dna = new ArrayList<>((Collection<? extends Integer>) toClone);
         this.independentActions = toClone.independentActions;
     }
 
-    public int getAction(int index) {
+    public byte getAction(int index) {
         return dna.get(index);
     }
 
-    public void setAction(int index, int action) {
+    public void setAction(int index, byte action) {
         dna.set(index, action);
     }
 
@@ -45,7 +45,7 @@ public class DNA {
     public void mutate() {
         for (int i = 0; i < dna.size(); i++) {
             if (FastRand.splittableRandom.nextDouble() < mutationRate) {
-                dna.set(i, FastRand.splittableRandom.nextInt(independentActions));
+                dna.set(i, (byte) FastRand.splittableRandom.nextInt(independentActions));
             }
         }
     }

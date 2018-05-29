@@ -18,9 +18,11 @@ public class VirusCreature implements ICreature {
     1: right
     2: up
     3: down
-    4: explode
+    4: shootLaser
     5: dont move
      */
+
+    private final float LASER_FITNESS_CHANGE = -0.5f;
 
     private final int R = 40;
     private final int G = 255;
@@ -111,6 +113,7 @@ public class VirusCreature implements ICreature {
                 switch (dna.getAction(age)) {
                     case 0: //left
                         newX--;
+                        containingCluster.recordFitnessChange(-0.01f);
                         break;
 
                     case 1: //right
@@ -125,20 +128,20 @@ public class VirusCreature implements ICreature {
                         newY++;
                         break;
 
-                    case 4: //explode
+                    case 4: //shootLaser
 //                        if (!abilityUsed)
-//                            explode();
+//                            shootLaser();
 //                        abilityUsed = true;
 //                        newX++;
+                        containingCluster.recordFitnessChange(-0.05f);
                         break;
 
                     case 5: //do nothing
+                        containingCluster.recordFitnessChange(-0.05f);
                         break;
                     default: //default is do nothing
                         break;
                 }
-            } else {
-                done = true;
             }
 
             //If the creature tried to move, tell the containingWorld that we are trying to move
@@ -153,6 +156,7 @@ public class VirusCreature implements ICreature {
         }
 
         age++;
+        done = age >= actions;
     }
 
     @Override
@@ -163,7 +167,7 @@ public class VirusCreature implements ICreature {
         screenBuffer.rect(x, y, 1, 1);
     }
 
-    private void explode() {
+    private void shootLaser() {
         for (int i = 1; i < 3; i++) {
             ICreature explodedCreature = containingWorld.getCreature(x + i, y);
             if (explodedCreature != null) {
@@ -174,7 +178,7 @@ public class VirusCreature implements ICreature {
             ICreature virusLaser = new VirusLaser(x + i, y, containingWorld);
             containingWorld.addCreature(virusLaser, true);
         }
-        containingCluster.recordLaserShot();
+        containingCluster.recordFitnessChange(LASER_FITNESS_CHANGE);
     }
 
     @Override

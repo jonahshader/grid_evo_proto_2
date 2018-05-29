@@ -54,7 +54,7 @@ public class Main extends PApplet {
     @Override
     public void setup() {
 
-        frameRate(15);
+        frameRate(20);
         surface.setResizable(true);
         blendMode(BLEND);
         screenBuffer = createGraphics(worldWidth, worldHeight);
@@ -73,10 +73,10 @@ public class Main extends PApplet {
     public void draw() {
         //Run the world (everything)
         if (fastMode) {
-            for (int i = 0; i < 30000; i++) {
+            for (int i = 0; i < 50000; i++) {
                 simulator.run();
             }
-            surface.setTitle("FPS: " + frameRate * 30000);
+            surface.setTitle("FPS: " + frameRate * 50000);
         } else {
             simulator.run();
             surface.setTitle("FPS: " + frameRate);
@@ -98,7 +98,7 @@ public class Main extends PApplet {
     public void keyPressed() {
         if (key == 'o' || key == 'O') {
             fastMode = !fastMode;
-            frameRate(fastMode ? 1000 : 15);
+            frameRate(fastMode ? 1000 : 20);
         }
     }
 

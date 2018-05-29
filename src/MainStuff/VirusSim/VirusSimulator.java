@@ -58,9 +58,9 @@ public class VirusSimulator {
 
             //the anti virus cluster's fitness depends on its own fitness and the opposite of virus's fitness
             float antiVirusFitness = antiVirusClusters.get(currentCluster).getFitness();
-            antiVirusFitness *= 0.1; //25& of the antivirus's fitness depends on its own distance from the right side
+            antiVirusFitness *= 0.01; //25& of the antivirus's fitness depends on its own distance from the right side
             float invertedVirusFitness = world.getWidth() - virusClusters.get(currentCluster).getFitnessNoLaser();
-            antiVirusFitness += invertedVirusFitness * 0.9;
+            antiVirusFitness += invertedVirusFitness * 0.99;
             antiVirusClusters.get(currentCluster).setFitness(antiVirusFitness, currentIteration);
             System.out.print("Gen " + generation + " Virus " + currentCluster + " Average fitness: " + String.format("%.2f", virusClusters.get(currentCluster).getAverageFitness()));
             System.out.println(" AntiVirus average fitness: " + String.format("%.2f", antiVirusClusters.get(currentCluster).getAverageFitness()));
@@ -78,10 +78,10 @@ public class VirusSimulator {
                     generation++;
 
                     //sort clusters from greatest to least fitness
-                    virusClusters.sort(((o1, o2) -> Float.compare(o1.getAverageFitness(), o2.getAverageFitness())));
-                    antiVirusClusters.sort(((o1, o2) -> Float.compare(o1.getAverageFitness(), o2.getAverageFitness())));
-                    Collections.reverse(virusClusters);
-                    Collections.reverse(antiVirusClusters);
+                    virusClusters.sort(((o1, o2) -> Float.compare(o2.getAverageFitness(), o1.getAverageFitness())));
+                    antiVirusClusters.sort(((o1, o2) -> Float.compare(o2.getAverageFitness(), o1.getAverageFitness())));
+//                    Collections.reverse(virusClusters);
+//                    Collections.reverse(antiVirusClusters);
 
 //                    //print virus cluster fitness'
 //                    for (int i = 0; i < virusClusters.size(); i++) {
@@ -184,14 +184,14 @@ public class VirusSimulator {
                     for (int i = 0; i < virusClusters.size(); i++) {
                         virusClusters.get(i).clearFitness();
                         virusClusters.get(i).setNewDNA(DNA.getClusterClone(bestVirusDNA));
-                        if (i > 0)
+//                        if (i > 0)
                             virusClusters.get(i).mutateDNA();
                     }
 
                     for (int i = 0; i < antiVirusClusters.size(); i++) {
                         antiVirusClusters.get(i).clearFitness();
                         antiVirusClusters.get(i).setNewDNA(DNA.getClusterClone(bestAntiVirusDNA));
-                        if (i != antiVirusClusters.size() / 2)
+//                        if (i != antiVirusClusters.size() / 2)
                             antiVirusClusters.get(i).mutateDNA();
                     }
 
@@ -200,9 +200,10 @@ public class VirusSimulator {
                 } else {
                     //shift the antivirus clusters down one
 //                    System.out.println("next iteration");
-                    antiVirusClusters.add(0, antiVirusClusters.get(antiVirusClusters.size() - 1));
-                    antiVirusClusters.remove(antiVirusClusters.size() - 1);
-//                    Collections.shuffle(antiVirusClusters);
+//                    antiVirusClusters.add(0, antiVirusClusters.get(antiVirusClusters.size() - 1));
+//                    antiVirusClusters.remove(antiVirusClusters.size() - 1);
+                    Collections.shuffle(virusClusters);
+                    Collections.shuffle(antiVirusClusters);
                 }
             }
             virusClusters.get(currentCluster).start();
