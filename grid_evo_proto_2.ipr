@@ -5,7 +5,6 @@
       <output-path>$PROJECT_DIR$/out/artifacts/grid_evo_proto_2_jar</output-path>
       <root id="archive" name="grid_evo_proto_2.jar">
         <element id="module-output" name="grid_evo_proto_2" />
-        <element id="extracted-dir" path="$PROJECT_DIR$/../../OneDrive Stuff/OneDrive - Lake Orion Community Schools/Libraries/Processing Libs/core.jar" path-in-jar="/" />
       </root>
     </artifact>
   </component>
@@ -136,6 +135,20 @@
       </item>
     </group>
   </component>
+  <component name="ProjectCodeStyleConfiguration">
+    <option name="PREFERRED_PROJECT_CODE_STYLE" value="Default" />
+    <code_scheme name="Project" version="173">
+      <JetCodeStyleSettings>
+        <option name="CODE_STYLE_DEFAULTS" value="KOTLIN_OFFICIAL" />
+      </JetCodeStyleSettings>
+      <ScalaCodeStyleSettings>
+        <option name="MULTILINE_STRING_CLOSING_QUOTES_ON_NEW_LINE" value="true" />
+      </ScalaCodeStyleSettings>
+      <codeStyleSettings language="kotlin">
+        <option name="CODE_STYLE_DEFAULTS" value="KOTLIN_OFFICIAL" />
+      </codeStyleSettings>
+    </code_scheme>
+  </component>
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/grid_evo_proto_2.iml" filepath="$PROJECT_DIR$/grid_evo_proto_2.iml" />
@@ -148,9 +161,10 @@
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
   </component>
   <component name="libraryTable">
-    <library name="core">
+    <library name="processing.core" type="repository">
+      <properties include-transitive-deps="false" maven-id="org.processing:core:3.3.7" />
       <CLASSES>
-        <root url="jar://$PROJECT_DIR$/../../OneDrive Stuff/OneDrive - Lake Orion Community Schools/Libraries/Processing Libs/core.jar!/" />
+        <root url="jar://$PROJECT_DIR$/lib/core-3.3.7.jar!/" />
       </CLASSES>
       <JAVADOC />
       <SOURCES />
